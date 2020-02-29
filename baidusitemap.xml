@@ -2,7 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://xfljm.github.io/2020/SpringSecurity-1-SpringSecurity-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2020-02-26</lastmod>
+    <lastmod>2020-02-29</lastmod>
+  </url>  <url>
+    <loc>http://xfljm.github.io/2020/SpringSecurity-2-SpringSecurity-%E8%AE%A4%E8%AF%81%E4%B8%8E%E6%8E%88%E6%9D%83/</loc>
+    <lastmod>2020-02-27</lastmod>
   </url>  <url>
     <loc>http://xfljm.github.io/2020/hello-world/</loc>
     <lastmod>2020-01-04</lastmod>
