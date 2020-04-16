@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java基础," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. ArrayList与LinkedList的区别和适用场景相同点： ArrayList和LinkedList都是实现List接口。List集合的特点：元素有放入顺序，元素可重复。都是线程不安全。 不同点： Arraylist：底层是基于动态数组实现，因为地址连续，一旦数据存储好了，查询操作效率会比较高。但是因为地址连续， ArrayList要移动数据,所以插入和删除操作效率比较低。 Linke">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[object Object]">
+<meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="晓风残月的博客">
+<meta property="og:description" content="1. ArrayList与LinkedList的区别和适用场景相同点： ArrayList和LinkedList都是实现List接口。List集合的特点：元素有放入顺序，元素可重复。都是线程不安全。 不同点： Arraylist：底层是基于动态数组实现，因为地址连续，一旦数据存储好了，查询操作效率会比较高。但是因为地址连续， ArrayList要移动数据,所以插入和删除操作效率比较低。 Linke">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1490755/201905/1490755-20190503174209019-507472925.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1490755/201905/1490755-20190503174232978-1430386020.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/b96CibCt70iabltwibXkibicbJfSaEMq3FMm2Hjlp19EeVmz1hdMACtiaQ0o0iaQ9suGJppEdvJOFs0lgrbkM2WrgV1rQ/640?tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2020-04-16T03:35:31.816Z">
+<meta property="article:modified_time" content="2020-04-16T03:57:53.894Z">
+<meta property="article:author" content="xiaofei">
+<meta property="article:tag" content="Java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/1490755/201905/1490755-20190503174209019-507472925.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xfljm.github.io/2020/Java基础-4-集合-Java基础-List集合面试题/"/>
+
+
+
+
+
+  <title>[object Object] | 晓风残月的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晓风残月的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaofei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晓风残月的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-16T11:35:31+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-ArrayList与LinkedList的区别和适用场景"><a href="#1-ArrayList与LinkedList的区别和适用场景" class="headerlink" title="1. ArrayList与LinkedList的区别和适用场景"></a>1. ArrayList与LinkedList的区别和适用场景</h2><p><strong>相同点：</strong></p>
+<p>ArrayList和LinkedList都是实现List接口。List集合的特点：元素有放入顺序，元素可重复。都是线程不安全。</p>
+<p><strong>不同点：</strong></p>
+<p><strong><em>Arraylist</em></strong>：底层是基于动态数组实现，因为地址连续，一旦数据存储好了，查询操作效率会比较高。但是因为地址连续， ArrayList要移动数据,所以插入和删除操作效率比较低。</p>
+<p><strong><em>LinkedList</em></strong>：由于实现了Deque接口，所以底层的数据结构实际上是一个双向链表。由于在插入和删除数据时，其不需要移动数据，所以进行add和remove操作时比较占优势。（但是如果直接进行add(E e)时，使用ArrayList性能也很高）因为LinkedList要移动指针,所以查询操作性能比较低。需要占用的内存高于ArrayList</p>
+<p><strong>适用场景分析：</strong><br>当需要对数据进行对此访问的情况下选用ArrayList，当需要对数据进行多次增加删除修改时采用LinkedList。</p>
+<h2 id="2-ArrayList与Vector的区别和适用场景"><a href="#2-ArrayList与Vector的区别和适用场景" class="headerlink" title="2. ArrayList与Vector的区别和适用场景"></a>2. ArrayList与Vector的区别和适用场景</h2><p><strong>相同点：</strong></p>
+<p>ArrayList与Vector都是实现List接口。List集合的特点：元素有放入顺序，元素可重复。都是基于动态数组实现。在进行访问数据时速度很快，但是增加和删除数据速度慢。ArrayList和Vector的迭代器实现都是fail-fast的。ArrayList和Vector两者允许null值，也可以使用索引值对元素进行随机访问。</p>
+<p><strong>不同点：</strong></p>
+<p><strong><em>ArrayList</em></strong>：默认的扩容为原来的1.5倍，没有提供设置扩容空间大小。线程不安全</p>
+<p><strong><em>Vector</em></strong>：默认扩容为原来的2倍，提供了设置扩容大小（即变量capacityIncrement）。在Vector类中的方法前面有synchronization关键字，能够实现同步，所以线程安全。但是由于这种线程安全机制导致Vector类的性能要低于ArrayList。</p>
+<p><strong>使用场景</strong></p>
+<p>如果希望线程安全，那么使用Vector类。</p>
+<h2 id="3-如何实现ArrayList线程安全呢？"><a href="#3-如何实现ArrayList线程安全呢？" class="headerlink" title="3. 如何实现ArrayList线程安全呢？"></a>3. 如何实现ArrayList线程安全呢？</h2><p>通常有三种方法：</p>
+<p>（1）使用关键字synchronization</p>
+<p>（2）使用线程安全包装方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> ArrayList());</span><br></pre></td></tr></table></figure>
+
+<p>（3）使用ArrayList的安全版本类CopyOnWriteArrayList类</p>
+<p>参考资料： <a href="https://mp.weixin.qq.com/s/YQyroql8As9tpyRO9-MOsA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/YQyroql8As9tpyRO9-MOsA</a> </p>
+<h2 id="4-Array-数组-和-ArrayList-有什么区别？什么时候该应-Array-而不是-ArrayList-呢？"><a href="#4-Array-数组-和-ArrayList-有什么区别？什么时候该应-Array-而不是-ArrayList-呢？" class="headerlink" title="4.Array(数组) 和 ArrayList 有什么区别？什么时候该应 Array 而不是 ArrayList 呢？"></a>4.Array(数组) 和 ArrayList 有什么区别？什么时候该应 Array 而不是 ArrayList 呢？</h2><p>答：它们的区别是：</p>
+<ol>
+<li>Array 可以包含基本类型和对象类型，ArrayList 只能包含对象类型。</li>
+<li>Array 大小是固定的，ArrayList 的大小是动态变化的。</li>
+<li>ArrayList 提供了更多的方法和特性，比如：addAll()，removeAll()，iterator() 等等。</li>
+</ol>
+<p>对于基本类型数据，集合使用自动装箱来减少编码工作量。但是，当处理固定大小的基本数据类型的时候，这种方式相对比较慢。</p>
+<h2 id="5-遍历一个List有哪些不同的方式？"><a href="#5-遍历一个List有哪些不同的方式？" class="headerlink" title="5.遍历一个List有哪些不同的方式？"></a>5.遍历一个List有哪些不同的方式？</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String obj : strList)&#123;   </span><br><span class="line">	System.out.println(obj); </span><br><span class="line">&#125;</span><br><span class="line">Iterator&lt;String&gt; it = strList.iterator(); </span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;   </span><br><span class="line">    String obj = it.next();   </span><br><span class="line">    System.out.println(obj); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用迭代器更加线程安全，因为它可以确保，在当前遍历的集合元素被更改的时候，它会抛出ConcurrentModificationException。</p>
+<h2 id="6-ArrayList是如何扩容的ArrayList是如何实现自动增加的？"><a href="#6-ArrayList是如何扩容的ArrayList是如何实现自动增加的？" class="headerlink" title="6.ArrayList是如何扩容的ArrayList是如何实现自动增加的？"></a>6.ArrayList是如何扩容的ArrayList是如何实现自动增加的？</h2><p>如果是使用无参构造的话，初始容量是10，当超过了10个容量时，就需要扩容，每次扩容为之前的1.5倍。调用的是Arrays.copy(elementData,newCapacity)。所以扩容涉及到数组的复制和移动，我们应该避免扩容。在初始化的时候预估容量大小。</p>
+<h2 id="7-往ArrayList集合加入一万条数据，应该怎么提高效率？"><a href="#7-往ArrayList集合加入一万条数据，应该怎么提高效率？" class="headerlink" title="7.往ArrayList集合加入一万条数据，应该怎么提高效率？"></a>7.往ArrayList集合加入一万条数据，应该怎么提高效率？</h2><p>ArrayList的构造方法有三种。当数据量比较大，这里又已经明确是一万条了，我们应该在初始化的时候就给它设置好容量。</p>
+<p>不然使用无参构造器初始容量只有10，后面要扩容，扩容又比较伤性能，因为涉及到数组的复制，将原来的数组复制到新的存储区域中去。</p>
+<p>PS:ArrayList动态扩容是一个重点一定要理解好，附上传送门：<a href="https://blog.csdn.net/zymx14/article/details/78324464" target="_blank" rel="noopener">https://blog.csdn.net/zymx14/article/details/78324464</a></p>
+<h2 id="8-如何复制某个ArrayList到另一个ArrayList中去？"><a href="#8-如何复制某个ArrayList到另一个ArrayList中去？" class="headerlink" title="8.如何复制某个ArrayList到另一个ArrayList中去？"></a>8.如何复制某个ArrayList到另一个ArrayList中去？</h2><p>一般不直接用“=”赋值，这是将引用指向了同一片地址，一个修改了里面的内容另一个也会跟着变动。</p>
+<p>一般采用如下方式：</p>
+<p>ArrayList A = new ArrayList();//假设此时A集合已经有了数据。构造器法<br>ArrayList B = new ArrayList(A);</p>
+<p>//clone法<br>ArrayList A = new ArrayList();<br>ArrayList B =  (ArrayList) A.clone();</p>
+<p>ArrayList A = new ArrayList(); //初始化时最好先预估容量大小<br>ArrayList B = new ArrayList();<br>B.addAll(A);</p>
+<p>还可以调用Collections.copy()方法，参考博客：<a href="https://blog.csdn.net/tiantiandjava/article/details/51072173" target="_blank" rel="noopener">https://blog.csdn.net/tiantiandjava/article/details/51072173</a></p>
+<h2 id="9-在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？"><a href="#9-在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？" class="headerlink" title="9.在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？"></a>9.在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？</h2><p>查看源代码可以发现，当通过索引去增删元素的时候效率是比较低的，因为要频繁的进行数组的复制和移动，如果经常增删的话我们可以去考虑其他的集合。</p>
+<p>通过索引增加过程：1.检查索引是否越界？2.检查容量是否足够？3调用System.arrayCopy(……)操作，效率较低</p>
+<p>通过索引删除元素：1.检查索引是否越界？2.调用System.arrayCopy(….)操作</p>
+<p>源代码截图如下：</p>
+<p><img src="https://img2018.cnblogs.com/blog/1490755/201905/1490755-20190503174209019-507472925.png" alt></p>
+<p><img src="https://img2018.cnblogs.com/blog/1490755/201905/1490755-20190503174232978-1430386020.png" alt></p>
+<h2 id="10-当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？"><a href="#10-当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？" class="headerlink" title="10.当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？"></a>10.当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？</h2><p>首先因为ArrayList当被做参数传递到某个方法中时，传递的是引用，所以对其进行修改会影响到原数组，所以ArrayList在没有被复制的情况下直接被分配给了成员变量，那么就可能发生这种情况*，那么可先进行复制再传递</p>
+<p>1.使用clone()方法</p>
+<blockquote>
+<p>比如ArrayList oldArray= oldArray.clone()</p>
+</blockquote>
+<p>2.使用ArrayList构造方法</p>
+<blockquote>
+<p>比如：ArrayList oldArray= new ArrayList(oldArray)</p>
+</blockquote>
+<p>3.使用Collection的copy方法</p>
+<blockquote>
+<p>使用Collection的copy方法</p>
+</blockquote>
+<h2 id="11-关于ArrayList的扩容是如何实现的原理是什么？"><a href="#11-关于ArrayList的扩容是如何实现的原理是什么？" class="headerlink" title="11.关于ArrayList的扩容是如何实现的原理是什么？"></a>11.关于ArrayList的扩容是如何实现的原理是什么？</h2><p>首先明确ArrayList的构造方法有三种，默认的initCapacity容量为10，如果初始化时一开始指定了容量，或者通过集合作为元素，则容量为指定的大小或参数集合的大小。每次扩容为原来的1.5倍，如果扩容后的容量小于所需的最小容量，则数组容量为所需的最小容量。如果扩容后的容量大于所需的最小容量，则数组容量为扩容后的容量。每次扩容后都要调用arraycopy    ,涉及到整个数组的复制和移动。所以要尽量减少扩容的次数提高效率，在数据量比较大的时候初始化时指定容量的大小。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/b96CibCt70iabltwibXkibicbJfSaEMq3FMm2Hjlp19EeVmz1hdMACtiaQ0o0iaQ9suGJppEdvJOFs0lgrbkM2WrgV1rQ/640?tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h2 id="12-LinkedList的底层与常用方法实现的了解"><a href="#12-LinkedList的底层与常用方法实现的了解" class="headerlink" title="12.LinkedList的底层与常用方法实现的了解"></a>12.LinkedList的底层与常用方法实现的了解</h2><p>LinkedList也实现了List接口，有序且允许元素重复和为null值，底层是双向链表，具有链表增删效率高和查询效率慢的特点。虽然它在查询实现时采用了折半查找提高效率的思想，但在查询上还是比不过按索引查的ArrayList.做过单链表，双向链表练习的人应该再看LinkedList源代码感到很熟悉。</p>
+
+      
+    </div>
+    
+    
+    
+	
+
+    <!-- 添加文章已经阅读完 -->
+    <div>
+	
+	<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	
+    </div>
+    
+<div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>文章作者:</span>xiaofei</a></p>
+  <p><span>发布时间:</span>2020年04月16日 - 11:35:31</p>
+  <p><span>最后更新:</span>2020年04月16日 - 11:57:53</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+    
+</div>
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag"># Java基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E4%B9%8BConcurrentHashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="prev" title="[object Object]">
+                <i class="fa fa-chevron-left"></i> [object Object]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="next" title="[object Object]">
+                [object Object] <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="xiaofei" />
+            
+              <p class="site-author-name" itemprop="name">xiaofei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:821195692@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                      
+                        <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ArrayList与LinkedList的区别和适用场景"><span class="nav-number">1.</span> <span class="nav-text">1. ArrayList与LinkedList的区别和适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ArrayList与Vector的区别和适用场景"><span class="nav-number">2.</span> <span class="nav-text">2. ArrayList与Vector的区别和适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-如何实现ArrayList线程安全呢？"><span class="nav-number">3.</span> <span class="nav-text">3. 如何实现ArrayList线程安全呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Array-数组-和-ArrayList-有什么区别？什么时候该应-Array-而不是-ArrayList-呢？"><span class="nav-number">4.</span> <span class="nav-text">4.Array(数组) 和 ArrayList 有什么区别？什么时候该应 Array 而不是 ArrayList 呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-遍历一个List有哪些不同的方式？"><span class="nav-number">5.</span> <span class="nav-text">5.遍历一个List有哪些不同的方式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-ArrayList是如何扩容的ArrayList是如何实现自动增加的？"><span class="nav-number">6.</span> <span class="nav-text">6.ArrayList是如何扩容的ArrayList是如何实现自动增加的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-往ArrayList集合加入一万条数据，应该怎么提高效率？"><span class="nav-number">7.</span> <span class="nav-text">7.往ArrayList集合加入一万条数据，应该怎么提高效率？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何复制某个ArrayList到另一个ArrayList中去？"><span class="nav-number">8.</span> <span class="nav-text">8.如何复制某个ArrayList到另一个ArrayList中去？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？"><span class="nav-number">9.</span> <span class="nav-text">9.在索引中ArrayList的增加或者删除某个对象的运行过程？效率很低吗？解释一下为什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？"><span class="nav-number">10.</span> <span class="nav-text">10.当传递ArrayList到某个方法中，或者某个方法返回ArrayList，什么时候要考虑安全隐患？如何修复安全违规这个问题呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-关于ArrayList的扩容是如何实现的原理是什么？"><span class="nav-number">11.</span> <span class="nav-text">11.关于ArrayList的扩容是如何实现的原理是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-LinkedList的底层与常用方法实现的了解"><span class="nav-number">12.</span> <span class="nav-text">12.LinkedList的底层与常用方法实现的了解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaofei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '3bcebf684203c0c7aa22',
+      clientSecret: 'ef68f0a69f005abe10d1e71fad689e39900976ba',
+      repo: 'xfljm.github.io',
+      owner: 'xfljm',
+      admin: ['xfljm'],
+      id: location.pathname,
+      distractionFreeMode: 'true'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

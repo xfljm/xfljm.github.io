@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetailsServic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringSecurity-5-SpringSecurity-实现自动登录和自动注销">
+<meta property="og:url" content="http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/index.html">
+<meta property="og:site_name" content="晓风残月的博客">
+<meta property="og:description" content="1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetailsServic">
+<meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214442.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200304104452.png">
+<meta property="article:published_time" content="2020-03-03T13:37:44.276Z">
+<meta property="article:modified_time" content="2020-03-04T14:27:19.586Z">
+<meta property="article:author" content="xiaofei">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-实现自动登录和自动注销/"/>
+
+
+
+
+
+  <title>SpringSecurity-5-SpringSecurity-实现自动登录和自动注销 | 晓风残月的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晓风残月的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaofei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晓风残月的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringSecurity-5-SpringSecurity-实现自动登录和自动注销</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-03T21:37:44+08:00">
+                2020-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-功能实现"><a href="#1-功能实现" class="headerlink" title="1.功能实现"></a>1.功能实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyUserDetailsService myUserDetailsService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/actuator/**"</span>).permitAll()</span><br><span class="line">                .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">                .and()</span><br><span class="line">            .formLogin()</span><br><span class="line">                .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">                .failureHandler(<span class="keyword">new</span> MyAuthenticationFailureHandler()) <span class="comment">// 登录失败后的处理</span></span><br><span class="line">                .and()</span><br><span class="line">             .csrf().disable()</span><br><span class="line">             .rememberMe()   </span><br><span class="line">                .userDetailsService(myUserDetailsService); <span class="comment">// 添加记住我</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行项目</p>
+<p><img src="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png" alt></p>
+<p>当点击<code>Remember me on this computer.</code>并成功登录后，在浏览器将生成一个cookie（除了JSESSIONID外）</p>
+<p><img src="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214442.png" alt></p>
+<h2 id="2-原理分析"><a href="#2-原理分析" class="headerlink" title="2. 原理分析"></a>2. 原理分析</h2><p>在<code>AbstractRemembermeServices</code>类中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractRememberMeServices</span> <span class="keyword">implements</span> <span class="title">RememberMeServices</span>,</span></span><br><span class="line"><span class="class">		<span class="title">InitializingBean</span>, <span class="title">LogoutHandler</span> </span>&#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TWO_WEEKS_S = <span class="number">1209600</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// ....</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> tokenValiditySeconds = TWO_WEEKS_S; <span class="comment">// 过期时间是2周</span></span><br></pre></td></tr></table></figure>
+
+<p>另外存在方法<code>loginSuccess</code>,这个方法具体实现分类为：<code>TokenBasedRememberMeServices</code>和<code>PersistentTokenBasedRememberMeServices</code>后者将token存储在数据库中（参考：<a href="https://niocoder.com/2018/01/17/Spring-Security%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%83-Spring-Security-%E8%AE%B0%E4%BD%8F%E6%88%91/#persistenttokenbasedremembermeservicesonloginsuccess" target="_blank" rel="noopener">Spring Security源码分析七：Spring Security 记住我</a>）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">loginSuccess</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">                               HttpServletResponse response, Authentication successfulAuthentication)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!rememberMeRequested(request, parameter)) &#123;</span><br><span class="line">        logger.debug(<span class="string">"Remember-me login not requested."</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    onLoginSuccess(request, response, successfulAuthentication);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）查看<code>TokenBasedRememberMeServices</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoginSuccess</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">			Authentication successfulAuthentication)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		String username = retrieveUserName(successfulAuthentication);</span><br><span class="line">		String password = retrievePassword(successfulAuthentication);</span><br><span class="line">		<span class="comment">// ....</span></span><br><span class="line">		</span><br><span class="line">        <span class="comment">// Cookie 失效时间</span></span><br><span class="line">		<span class="keyword">int</span> tokenLifetime = calculateLoginLifetime(request, successfulAuthentication);</span><br><span class="line">		<span class="keyword">long</span> expiryTime = System.currentTimeMillis();</span><br><span class="line">		expiryTime += <span class="number">1000L</span> * (tokenLifetime &lt; <span class="number">0</span> ? TWO_WEEKS_S : tokenLifetime);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构造 MD5 签名，与校验 Cookie 的逻辑一致</span></span><br><span class="line">		String signatureValue = makeTokenSignature(expiryTime, username, password);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 存储到cookie中</span></span><br><span class="line">		setCookie(<span class="keyword">new</span> String[] &#123; username, Long.toString(expiryTime), signatureValue &#125;,</span><br><span class="line">				tokenLifetime, request, response);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//....</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在生成签名时，以前的Spring Security的getKey是生成一个UUID，需要看一下在<code>AbstractRemembermeServices</code>在被调用之前对key的赋值，估计也是一个UUId，正式UUID的原因。这将导致每次重启服务后，key都会重新生成，使得重启之前的所有自动登录cookie失效。除此之外，在多实例部署的情况下，由于实例间的 key并不相同，所以当用户访问系统的另一个实例时，自动登录策略就会失效。合理的用法是指定key。</p>
+<p>在<code>RememberMeConfigurer</code>中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">getKey</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.key == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.key = UUID.randomUUID().toString();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>参考资料：</p>
+<p><a href="https://www.jianshu.com/p/00dced2d301d" target="_blank" rel="noopener">https://www.jianshu.com/p/00dced2d301d</a></p>
+<p>设置key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.rememberMe()  <span class="comment">// 配置rememberMe</span></span><br><span class="line">    .userDetailsService(myUserDetailsService)</span><br><span class="line">    .key(<span class="string">"xfcy"</span>); <span class="comment">// 设置key</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>临时性自动登录：这种方式不需要服务器花费空间来存储自动登录的相关数据，实现简单，安全性相对较高。但存在潜在风险，即如果该令牌在有效期内被盗取，那么用户的身份将完全暴露。</p>
+<h1 id="2-持久化令牌"><a href="#2-持久化令牌" class="headerlink" title="2. 持久化令牌"></a>2. 持久化令牌</h1><h2 id="2-1-持久化令牌实现"><a href="#2-1-持久化令牌实现" class="headerlink" title="2.1 持久化令牌实现"></a>2.1 持久化令牌实现</h2><p>持久化令牌方案在交互上与散列加密方案一致，都是在用户勾选Remember-me之后，将生成的令<br>牌发送到用户浏览器，并在用户下次访问系统时读取该令牌进行认证。不同的是，它采用了更加严谨<br>的安全性设计。<br>在持久化令牌方案中，最核心的是series和token两个值，它们都是用MD5散列过的随机字符串。<br>不同的是，series仅在用户使用密码重新登录时更新，而token会在每一个新的session中都重新生成。<br>这样设计有什么好处呢？<br>首先，解决了散列加密方案中一个令牌可以同时在多端登录的问题。每个会话都会引发token的更<br>新，即每个token仅支持单实例登录。<br>其次，自动登录不会导致series变更，而每次自动登录都需要同时验证series和token两个值，当该<br>令牌还未使用过自动登录就被盗取时，系统会在非法用户验证通过后刷新 token 值，此时在合法用户<br>的浏览器中，该token值已经失效。当合法用户使用自动登录时，由于该series对应的 token 不同，系统<br>可以推断该令牌可能已被盗用，从而做一些处理。例如，清理该用户的所有自动登录令牌，并通知该<br>用户可能已被盗号等。</p>
+<p>Spring Security使用PersistentRememberMeToken来表明一个验证实体。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersistentRememberMeToken</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String username;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String series;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String tokenValue;</span><br><span class="line">    <span class="comment">// 最后一次自动登录时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Date date;</span><br><span class="line"> 	</span><br><span class="line">    <span class="comment">//....   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要再数据库中定义一张<code>persistent_logins</code>表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CREATE TABLE <span class="title">persistent_logins</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  username VARCHAR(<span class="number">64</span>)</span> NOT NULL,</span></span><br><span class="line"><span class="function">  series <span class="title">VARCHAR</span><span class="params">(<span class="number">64</span>)</span> PRIMARY KEY,</span></span><br><span class="line"><span class="function">  token <span class="title">VARCHAR</span><span class="params">(<span class="number">64</span>)</span> NOT NULL,</span></span><br><span class="line"><span class="function">  last_used TIMESTAMP NOT NULL</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>SecurityConfig</code>的<code>configure</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    http.authorizeRequests()</span><br><span class="line">            .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">            .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">            .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">            .antMatchers(<span class="string">"/actuator/**"</span>).permitAll()</span><br><span class="line">            .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">            .and()</span><br><span class="line">        .formLogin()</span><br><span class="line">            .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">            .failureHandler(<span class="keyword">new</span> MyAuthenticationFailureHandler()) <span class="comment">// 登录失败后的处理</span></span><br><span class="line">            .and()</span><br><span class="line">        .csrf()</span><br><span class="line">        	.disable()</span><br><span class="line">        .rememberMe()</span><br><span class="line">        	.userDetailsService(myUserDetailsService)</span><br><span class="line">        	<span class="comment">//.key("xfcy"); // 设置key</span></span><br><span class="line">        	.tokenRepository(<span class="keyword">null</span>); <span class="comment">// 设置tokenRepository</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行项目，在数据库中将生成如下内容</p>
+<p><img src="https://raw.githubusercontent.com/xfljm/img/master/Img/20200304104452.png" alt></p>
+<p>显然，两种方案都存在cookie被盗取导致身份被暂时利用的可能，如果有更高的安全性需求，建<br>议使用Spring Security提供的令牌持久化方案。当然，最安全的方式还是尽量不使用自动登录，但很多<br>时候，在实际开发中，优质体验比不可预期的安全风险要更为优先。<br>如果决定提供自动登录功能，就应当限制cookie登录时的部分执行权限。例如，修改密码、修改<br>邮箱（防止找回密码）、查看隐私信息（如完整的手机号码、银行卡号等）等，校验登录密码或设置<br>独立密码来做二次校验也是不错的方案</p>
+<h1 id="自动注销"><a href="#自动注销" class="headerlink" title="自动注销"></a>自动注销</h1><p>在<code>WebSecurityConfigurerAdapter</code>类中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> HttpSecurity <span class="title">getHttp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 如果http存在，则直接返回</span></span><br><span class="line">       <span class="keyword">if</span> (http != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> http;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 使用默认的http配置</span></span><br><span class="line">	http = <span class="keyword">new</span> HttpSecurity(objectPostProcessor, authenticationBuilder,</span><br><span class="line">			sharedObjects);</span><br><span class="line">	<span class="keyword">if</span> (!disableDefaults) &#123;</span><br><span class="line">		<span class="comment">// @formatter:off</span></span><br><span class="line">		http</span><br><span class="line">			.csrf().and()</span><br><span class="line">			.addFilter(<span class="keyword">new</span> WebAsyncManagerIntegrationFilter())</span><br><span class="line">			.exceptionHandling().and()</span><br><span class="line">			.headers().and()</span><br><span class="line">			.sessionManagement().and()</span><br><span class="line">			.securityContext().and()</span><br><span class="line">			.requestCache().and()</span><br><span class="line">			.anonymous().and()</span><br><span class="line">			.servletApi().and()</span><br><span class="line">			.apply(<span class="keyword">new</span> DefaultLoginPageConfigurer&lt;&gt;()).and()</span><br><span class="line">			.logout(); <span class="comment">// 使用了默认的logout配置</span></span><br><span class="line">		</span><br><span class="line">           <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样我们可以知道<code>logout()</code>方法实际上应该是以<code>LogoutConfigure</code>作为基础配置</p>
+<p>在<code>LogoutConfigure</code>中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(H http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    LogoutFilter logoutFilter = createLogoutFilter(http);</span><br><span class="line">    http.addFilter(logoutFilter);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> LogoutFilter <span class="title">createLogoutFilter</span><span class="params">(H http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    logoutHandlers.add(contextLogoutHandler);</span><br><span class="line">    LogoutHandler[] handlers = logoutHandlers</span><br><span class="line">        .toArray(<span class="keyword">new</span> LogoutHandler[logoutHandlers.size()]);</span><br><span class="line">    LogoutFilter result = <span class="keyword">new</span> LogoutFilter(getLogoutSuccessHandler(), handlers);</span><br><span class="line">    result.setLogoutRequestMatcher(getLogoutRequestMatcher(http));</span><br><span class="line">    result = postProcess(result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> LogoutFilter <span class="title">createLogoutFilter</span><span class="params">(H http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    logoutHandlers.add(contextLogoutHandler);</span><br><span class="line">    LogoutHandler[] handlers = logoutHandlers</span><br><span class="line">        .toArray(<span class="keyword">new</span> LogoutHandler[logoutHandlers.size()]);</span><br><span class="line">    LogoutFilter result = <span class="keyword">new</span> LogoutFilter(getLogoutSuccessHandler(), handlers);</span><br><span class="line">    result.setLogoutRequestMatcher(getLogoutRequestMatcher(http));</span><br><span class="line">    result = postProcess(result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在LogoutFilter类中</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">LogoutFilter</span><span class="params">(LogoutSuccessHandler logoutSuccessHandler,</span></span></span><br><span class="line"><span class="function"><span class="params">                    LogoutHandler... handlers)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.handler = <span class="keyword">new</span> CompositeLogoutHandler(handlers);</span><br><span class="line">    Assert.notNull(logoutSuccessHandler, <span class="string">"logoutSuccessHandler cannot be null"</span>);</span><br><span class="line">    <span class="keyword">this</span>.logoutSuccessHandler = logoutSuccessHandler;</span><br><span class="line">    setFilterProcessesUrl(<span class="string">"/logout"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLogoutRequestMatcher</span><span class="params">(RequestMatcher logoutRequestMatcher)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(logoutRequestMatcher, <span class="string">"logoutRequestMatcher cannot be null"</span>);</span><br><span class="line">    <span class="keyword">this</span>.logoutRequestMatcher = logoutRequestMatcher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在LogoutFilter中</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest req, ServletResponse res, FilterChain chain)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">    HttpServletRequest request = (HttpServletRequest) req;</span><br><span class="line">    HttpServletResponse response = (HttpServletResponse) res;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// #1.匹配到/logout请求</span></span><br><span class="line">    <span class="keyword">if</span> (requiresLogout(request, response)) &#123;</span><br><span class="line">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">"Logging out user '"</span> + auth</span><br><span class="line">                         + <span class="string">"' and transferring to logout destination"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">	    <span class="comment">// #2.处理1-4步</span></span><br><span class="line">        <span class="keyword">this</span>.handler.logout(request, response, auth);</span><br><span class="line">		<span class="comment">// #3.重定向注册界面</span></span><br><span class="line">        logoutSuccessHandler.onLogoutSuccess(request, response, auth);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在CookieClearingLogoutHandler类中</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                   Authentication authentication)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (String cookieName : cookiesToClear) &#123;</span><br><span class="line">        <span class="comment">//# 1.Cookie置为null</span></span><br><span class="line">        Cookie cookie = <span class="keyword">new</span> Cookie(cookieName, <span class="keyword">null</span>);</span><br><span class="line">        String cookiePath = request.getContextPath() + <span class="string">"/"</span>;</span><br><span class="line">        cookie.setPath(cookiePath);</span><br><span class="line">        cookie.setMaxAge(<span class="number">0</span>);</span><br><span class="line">        response.addCookie(cookie);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在PersistentTokenBasedRememberMeServices</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                   Authentication authentication)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.logout(request, response, authentication);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (authentication != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//#1.清空persistent_logins表中记录</span></span><br><span class="line">        tokenRepository.removeUserTokens(authentication.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SecurityContextLogoutHandler类中</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">			Authentication authentication)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(request, <span class="string">"HttpServletRequest required"</span>);</span><br><span class="line">    <span class="keyword">if</span> (invalidateHttpSession) &#123;</span><br><span class="line">        HttpSession session = request.getSession(<span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">if</span> (session != <span class="keyword">null</span>) &#123;</span><br><span class="line">            logger.debug(<span class="string">"Invalidating session: "</span> + session.getId());</span><br><span class="line">            <span class="comment">// 当前session失效</span></span><br><span class="line">            session.invalidate();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (clearAuthentication) &#123;</span><br><span class="line">        SecurityContext context = SecurityContextHolder.getContext();</span><br><span class="line">        <span class="comment">//#2.清空当前的`SecurityContext`</span></span><br><span class="line">        context.setAuthentication(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SecurityContextHolder.clearContext();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    
+    
+    
+	
+
+    <!-- 添加文章已经阅读完 -->
+    <div>
+	
+	<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	
+    </div>
+    
+<div>
+    
+        
+    
+</div>
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/SpringSecurity-6-SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/" rel="prev" title="SpringSecurity-6-SpringSecurity-会话管理">
+                <i class="fa fa-chevron-left"></i> SpringSecurity-6-SpringSecurity-会话管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/SpringSecurity-4-SpringSecurity-%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%83%8F%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81/" rel="next" title="SpringSecurity-4-SpringSecurity-基于图像验证码的登录认证">
+                SpringSecurity-4-SpringSecurity-基于图像验证码的登录认证 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="xiaofei" />
+            
+              <p class="site-author-name" itemprop="name">xiaofei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:821195692@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                      
+                        <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-功能实现"><span class="nav-number">1.</span> <span class="nav-text">1.功能实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-原理分析"><span class="nav-number">2.</span> <span class="nav-text">2. 原理分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-持久化令牌"><span class="nav-number"></span> <span class="nav-text">2. 持久化令牌</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-持久化令牌实现"><span class="nav-number">1.</span> <span class="nav-text">2.1 持久化令牌实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动注销"><span class="nav-number"></span> <span class="nav-text">自动注销</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaofei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '3bcebf684203c0c7aa22',
+      clientSecret: 'ef68f0a69f005abe10d1e71fad689e39900976ba',
+      repo: 'xfljm.github.io',
+      owner: 'xfljm',
+      admin: ['xfljm'],
+      id: location.pathname,
+      distractionFreeMode: 'true'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

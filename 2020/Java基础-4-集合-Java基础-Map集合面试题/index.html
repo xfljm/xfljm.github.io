@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java基础," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[TOC] 1. 说说常见的集合有哪些吧？答：Map接口和Collection接口是所有集合框架的父接口：  Collection接口的子接口包括：Set接口和List接口 Map接口的实现类主要有：HashMap、TreeMap、Hashtable、ConcurrentHashMap以及Properties等 （使用键值对存储，两个key可以引用相同的对象，但是key不能重复） Set接口的实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[object Object]">
+<meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="晓风残月的博客">
+<meta property="og:description" content="[TOC] 1. 说说常见的集合有哪些吧？答：Map接口和Collection接口是所有集合框架的父接口：  Collection接口的子接口包括：Set接口和List接口 Map接口的实现类主要有：HashMap、TreeMap、Hashtable、ConcurrentHashMap以及Properties等 （使用键值对存储，两个key可以引用相同的对象，但是key不能重复） Set接口的实现">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/qhRZNwUg1HCCm1Cfib7Afo3auaJdY4zdp1tuMWQX6fA9a34RUbc7j54eXibA1SK2RaUEZM0EtQJq6sT0otlHJR2w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz/hbTNOSuicwlsXdFwHEU3CzoP7Dm8fYsT5lWNO20EiaZg8dtlB7iaLs6wsn9oXEL4XZIzdXiaaDvhprHQIXBGXK8QyA/640?wx_fmt=other&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FUUBXNob2BpJodOe3bqYrBlY5z89w9kBHROlXajeUhicGsy4XQ8z9ftQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5F2Yia6Y0TcQUcQWkgCJunfHicAuvgTPcuN8UGgaoXDGXezLJwNwuIadvA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FX6AhjvuFjlJrO74TTia3H8ib9J06X1ssZjibiaFXibcLJwZpnN2zTV9nGibQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FCS3F2FryduzQQ9e8lP4ZwFPxz00Uw2bOQE8GfuEXfdkPBHCicBOtRmQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2020-04-16T03:35:31.909Z">
+<meta property="article:modified_time" content="2020-04-16T04:00:02.268Z">
+<meta property="article:author" content="xiaofei">
+<meta property="article:tag" content="Java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/qhRZNwUg1HCCm1Cfib7Afo3auaJdY4zdp1tuMWQX6fA9a34RUbc7j54eXibA1SK2RaUEZM0EtQJq6sT0otlHJR2w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xfljm.github.io/2020/Java基础-4-集合-Java基础-Map集合面试题/"/>
+
+
+
+
+
+  <title>[object Object] | 晓风残月的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晓风残月的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaofei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晓风残月的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-16T11:35:31+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h2 id="1-说说常见的集合有哪些吧？"><a href="#1-说说常见的集合有哪些吧？" class="headerlink" title="1. 说说常见的集合有哪些吧？"></a>1. 说说常见的集合有哪些吧？</h2><p>答：Map接口和Collection接口是所有集合框架的父接口：</p>
+<ol>
+<li>Collection接口的子接口包括：Set接口和List接口</li>
+<li>Map接口的实现类主要有：HashMap、TreeMap、Hashtable、ConcurrentHashMap以及Properties等 （使用键值对存储，两个key可以引用相同的对象，但是key不能重复）</li>
+<li>Set接口的实现类主要有：HashSet、TreeSet、LinkedHashSet等。（set集合中元素无放入顺序，元素不可重复，重复元素会覆盖掉）</li>
+<li>List接口的实现类主要有：ArrayList、LinkedList、Stack以及Vector等。（list集合中元素有放入顺序，元素可重复）</li>
+</ol>
+<h2 id="2-HashMap与TreeMap、HashTable的区别及适用场景"><a href="#2-HashMap与TreeMap、HashTable的区别及适用场景" class="headerlink" title="2. HashMap与TreeMap、HashTable的区别及适用场景"></a>2. HashMap与TreeMap、HashTable的区别及适用场景</h2><p><strong>相同点</strong></p>
+<p>由于都是Map，Map集合通过Key/value保存数据，其中key唯一。</p>
+<p><strong>不同点</strong></p>
+<p><strong><em>HashMap</em></strong>：基于哈希表(散列表)实现。使用HashMap要求添加的键类明确定义了hashCode()和equals()[可以重写hashCode()和equals()]，为了优化HashMap空间的使用，您可以调优初始容量和负载因子。其中散列表的冲突处理主要分两种，一种是开放定址法，另一种是链表法。HashMap的实现中采用的是链表法。<strong>允许K/V都为null，HashMap没有考虑同步，是线程不安全的；支持fail-fast机制</strong></p>
+<p><strong><em>TreeMap</em></strong>：非线程安全基于红黑树实现。TreeMap没有调优选项，因为该树总处于平衡状态。</p>
+<p><strong><em>HashTable</em></strong>：<strong>K/V都不允许为null，Hashtable使用了synchronized关键字，是线程安全的；不支持fail-fast。</strong>HashTable被认为是个遗留的类，如果你寻求在迭代的时候修改Map，你应该使用CocurrentHashMap。</p>
+<p>使用场景**</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/qhRZNwUg1HCCm1Cfib7Afo3auaJdY4zdp1tuMWQX6fA9a34RUbc7j54eXibA1SK2RaUEZM0EtQJq6sT0otlHJR2w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h2 id="3-HashMap扩容原理"><a href="#3-HashMap扩容原理" class="headerlink" title="3. HashMap扩容原理"></a>3. HashMap扩容原理</h2><p>首先HashMap采用的是懒加载机制，当进行put操作时才会创建一个table数组，第一次调用resize操作，此时设定capacity为16，扩容阈值为16*0.75=12（默认，其中0.75是默认的负载因子）。第二次扩容在put操作完成之后，如果实际数量超过了扩容阈值就需要扩容。</p>
+<p>在第二次扩容时，</p>
+<p>（1）首先将旧数组用一个变量保存。</p>
+<p>（2）然后比较oldCap是否已经超过了最大容量（2的30次方），如果超过了则不能扩容，直接返回。另外将旧的容量<code>*</code>2赋值给新容量（第一次那么就是16<code>*</code>2=32），如果新容量小于最大容量并且大于初始容量（16），将新的阈值设置为旧阈值的2倍（12<code>*</code>2=24）。</p>
+<p>（3）调整HashMap中的数据。（但是这个过程相对较负载性能消耗较高，所以通常建议嫩能够预知数据容量的大小的情况下，设置初始容量。）</p>
+<h2 id="4-HashMap插入元素的过程"><a href="#4-HashMap插入元素的过程" class="headerlink" title="4. HashMap插入元素的过程"></a>4. HashMap插入元素的过程</h2><p><img src="https://mmbiz.qpic.cn/mmbiz/hbTNOSuicwlsXdFwHEU3CzoP7Dm8fYsT5lWNO20EiaZg8dtlB7iaLs6wsn9oXEL4XZIzdXiaaDvhprHQIXBGXK8QyA/640?wx_fmt=other&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<h2 id="5-HashMap是怎么解决哈希冲突的？"><a href="#5-HashMap是怎么解决哈希冲突的？" class="headerlink" title="5. HashMap是怎么解决哈希冲突的？"></a>5. HashMap是怎么解决哈希冲突的？</h2><p>（1）什么是哈希？</p>
+<p>有一种众所周知的数据结构， 可以快速地査找所需要的对象， 这就是散列表（ hash table)。散列表为每个对象计算一个整数， 称为散列码（hashcode)。在Java中散列表通常用链表数组实现（但是jdk1.8中引入了红黑树）。每个列表被称为桶（ bucket) 。要想査找表中对象的位置， 就要先计算它的散列码， 然后与桶的总数取余， 所得到的结果就是保存这个元素的桶的索引。比如某个对象的散列码为20，而这里桶的个数为5，所以得到索引为20%5=0，即最前面的那个桶了。</p>
+<p>如果我们大致知道最终会有多少元素插入散列表中，就可以设置桶数了。通常将桶数设置为预计个数的75%——150%，并且设置为一个素数。在java中设置的是2的幂，默认为16个。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FUUBXNob2BpJodOe3bqYrBlY5z89w9kBHROlXajeUhicGsy4XQ8z9ftQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>（2）什么是哈希冲突？</p>
+<p>当两个不同的输入值，根据同一散列函数计算出相同的散列值的现象，我们就把它叫做碰撞（哈希碰撞）。</p>
+<p>（3）怎么解决哈希冲突？</p>
+<ul>
+<li>链地址法</li>
+</ul>
+<p>在Java中解决哈希冲突的方式是<strong>链地址法</strong>，</p>
+<p>这样我们就可以将拥有相同哈希值的对象组织成一个链表放在hash值所对应的bucket下，<strong>但相比于hashCode返回的int类型，我们HashMap初始的容量大小<code>DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4</code>（即2的四次方16）要远小于int类型的范围，所以我们如果只是单纯的用hashCode取余来获取对应的bucket这将会大大增加哈希碰撞的概率，并且最坏情况下还会将HashMap变成一个单链表，</strong>所以我们还需要对hashCode作一定的优化。</p>
+<ul>
+<li>扰动函数</li>
+</ul>
+<p>我们不妨看看HashMap中的Hash()函数是如何解决的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;    </span><br><span class="line">    <span class="keyword">int</span> h;    <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);<span class="comment">// 与自己右移16位进行异或运算（高低位异或）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面提到的问题，主要是因为如果使用hashCode取余，那么相当于<strong>参与运算的只有hashCode的低位</strong>，高位是没有起到任何作用的，所以我们的思路就是让hashCode取值出的高位也参与运算，进一步降低hash碰撞的概率，使得数据分布更平均，我们把这样的操作称为<strong>扰动</strong>，这比在<strong>JDK 1.7</strong>中，更为简洁，<strong>相比在1.7中的4次位运算，5次异或运算（9次扰动），在1.8中，只进行了1次位运算和1次异或运算（2次扰动）；</strong></p>
+<ul>
+<li>红黑树</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5F2Yia6Y0TcQUcQWkgCJunfHicAuvgTPcuN8UGgaoXDGXezLJwNwuIadvA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>通过上面的<strong>链地址法（使用散列表）</strong>和<strong>扰动函数</strong>我们成功让我们的数据分布更平均，哈希碰撞减少，但是当我们的HashMap中存在大量数据时，加入我们某个bucket下对应的链表有n个元素，那么遍历时间复杂度就为O(n)，为了针对这个问题，JDK1.8在HashMap中新增了红黑树的数据结构，进一步使得遍历复杂度降低至O(logn)；</p>
+<p>总结：</p>
+<p>简单总结一下HashMap是使用了哪些方法来有效解决哈希冲突的：</p>
+<p><strong>1. 使用链地址法（使用散列表）来链接拥有相同hash值的数据；</strong><br><strong>2. 使用2次扰动函数（hash函数）来降低哈希冲突的概率，使得数据分布更平均；</strong><br><strong>3. 引入红黑树进一步降低遍历的时间复杂度，使得遍历更快；</strong></p>
+<h2 id="6-HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标？"><a href="#6-HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标？" class="headerlink" title="6. HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？"></a>6. HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</h2><p>答：<code>hashCode()</code>方法返回的是int整数类型，其范围为-(2 ^ 31)<del>(2 ^ 31 - 1)，约有40亿个映射空间，而HashMap的容量范围是在16（初始化默认值）</del>2 ^ 30，HashMap通常情况下是取不到最大值的，并且设备上也难以提供这么多的存储空间，从而导致通过<code>hashCode()</code>计算出的哈希值可能不在数组大小范围内，进而无法匹配存储位置；</p>
+<p><strong>面试官：那怎么解决呢？</strong></p>
+<p>答：</p>
+<ol>
+<li>HashMap自己实现了自己的<code>hash()</code>方法，通过两次扰动使得它自己的哈希值高低位自行进行异或运算，降低哈希碰撞概率也使得数据分布更平均；</li>
+<li>在保证数组长度为2的幂次方的时候，使用<code>hash()</code>运算之后的值与运算（&amp;）（数组长度 - 1）来获取数组下标的方式进行存储，这样一来是比取余操作更加有效率，二来也是因为只有当数组长度为2的幂次方时，h&amp;(length-1)才等价于h%length，三来解决了“哈希值与数组大小范围不匹配”的问题；</li>
+</ol>
+<p><strong>面试官：为什么数组长度要保证为2的幂次方呢？</strong></p>
+<p>答：</p>
+<ol>
+<li>只有当数组长度为2的幂次方时，h&amp;(length-1)才等价于h%length，即实现了key的定位，2的幂次方也可以减少冲突次数，提高HashMap的查询效率；</li>
+<li>如果 length 为 2 的次幂 则 length-1 转化为二进制必定是 11111……的形式，在于 h 的二进制与操作效率会非常的快，而且空间不浪费；如果 length 不是 2 的次幂，比如 length 为 15，则 length - 1 为 14，对应的二进制为 1110，在于 h 与操作，最后一位都为 0 ，而 0001，0011，0101，1001，1011，0111，1101 这几个位置永远都不能存放元素了，空间浪费相当大，更糟的是这种情况中，数组可以使用的位置比数组长度小了很多，这意味着进一步增加了碰撞的几率，减慢了查询的效率！这样就会造成空间的浪费。</li>
+</ol>
+<p><strong>面试官：那为什么是两次扰动呢？</strong></p>
+<p>答：这样就是加大哈希值低位的随机性，使得分布更均匀，从而提高对应数组存储下标位置的随机性&amp;均匀性，最终减少Hash冲突，两次就够了，已经达到了高位低位同时参与运算的目的；</p>
+<h2 id="7-HashMap在JDK1-7和JDK1-8中有哪些不同？"><a href="#7-HashMap在JDK1-7和JDK1-8中有哪些不同？" class="headerlink" title="7. HashMap在JDK1.7和JDK1.8中有哪些不同？"></a>7. HashMap在JDK1.7和JDK1.8中有哪些不同？</h2><p>答：</p>
+<table>
+<thead>
+<tr>
+<th align="left">不同</th>
+<th align="left">JDK 1.7</th>
+<th align="left">JDK 1.8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">存储结构</td>
+<td align="left">数组 + 链表</td>
+<td align="left">数组 + 链表 + 红黑树</td>
+</tr>
+<tr>
+<td align="left">初始化方式</td>
+<td align="left">单独函数：<code>inflateTable()</code></td>
+<td align="left">直接集成到了扩容函数<code>resize()</code>中</td>
+</tr>
+<tr>
+<td align="left">hash值计算方式</td>
+<td align="left">扰动处理 = 9次扰动 = 4次位运算 + 5次异或运算</td>
+<td align="left">扰动处理 = 2次扰动 = 1次位运算 + 1次异或运算</td>
+</tr>
+<tr>
+<td align="left">存放数据的规则</td>
+<td align="left">无冲突时，存放数组；冲突时，存放链表</td>
+<td align="left">无冲突时，存放数组；冲突 &amp; 链表长度 &lt; 8：存放单链表；冲突 &amp; 链表长度 &gt; 8：树化并存放红黑树</td>
+</tr>
+<tr>
+<td align="left">插入数据方式</td>
+<td align="left">头插法（先讲原位置的数据移到后1位，再插入数据到该位置）</td>
+<td align="left">尾插法（直接插入到链表尾部/红黑树）</td>
+</tr>
+<tr>
+<td align="left">扩容后存储位置的计算方式</td>
+<td align="left">全部按照原来方法进行计算（即hashCode -&gt;&gt; 扰动函数 -&gt;&gt; (h&amp;length-1)）</td>
+<td align="left">按照扩容后的规律计算（即扩容后的位置=原位置 or 原位置 + 旧容量）</td>
+</tr>
+</tbody></table>
+<h2 id="8-为什么HashMap中String、Integer这样的包装类适合作为K？"><a href="#8-为什么HashMap中String、Integer这样的包装类适合作为K？" class="headerlink" title="8. 为什么HashMap中String、Integer这样的包装类适合作为K？"></a>8. 为什么HashMap中String、Integer这样的包装类适合作为K？</h2><p>答：String、Integer等包装类的特性能够保证Hash值的不可更改性和计算准确性，能够有效的减少Hash碰撞的几率</p>
+<ol>
+<li>都是final类型，即不可变性，保证key的不可更改性，不会存在获取hash值不同的情况</li>
+<li>内部已重写了<code>equals()</code>、<code>hashCode()</code>等方法，遵守了HashMap内部的规范（不清楚可以去上面看看putValue的过程），不容易出现Hash值计算错误的情况；</li>
+</ol>
+<p><strong>面试官：如果我想要让自己的Object作为K应该怎么办呢？</strong></p>
+<p>答：重写<code>hashCode()</code>和<code>equals()</code>方法</p>
+<ol>
+<li><strong>重写<code>hashCode()</code>是因为需要计算存储数据的存储位置</strong>，需要注意不要试图从散列码计算中排除掉一个对象的关键部分来提高性能，这样虽然能更快但可能会导致更多的Hash碰撞；</li>
+<li><strong>重写<code>equals()</code>方法</strong>，需要遵守自反性、对称性、传递性、一致性以及对于任何非null的引用值x，x.equals(null)必须返回false的这几个特性，<strong>目的是为了保证key在哈希表中的唯一性</strong>；</li>
+</ol>
+<p><strong>面试官：String的equals()源码是怎样的？</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span> == anObject) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span> (n == anotherString.value.length) &#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (n-- != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (v1[i] != v2[i])</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先判断调用equals()的是否是同一对象，如果是则直接返回；然后就将字符串转换为字数数组逐个比较，如果不相同则直接返回false，直到最后返回true。</p>
+<p><strong>面试官：String的equals()源码是怎样的？</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h = hash;</span><br><span class="line">    <span class="keyword">if</span> (h == <span class="number">0</span> &amp;&amp; value.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">char</span> val[] = value;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; value.length; i++) &#123;</span><br><span class="line">            h = <span class="number">31</span> * h + val[i];</span><br><span class="line">        &#125;</span><br><span class="line">        hash = h;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="9-ConcurrentHashMap和Hashtable的区别？"><a href="#9-ConcurrentHashMap和Hashtable的区别？" class="headerlink" title="9. ConcurrentHashMap和Hashtable的区别？"></a>9. ConcurrentHashMap和Hashtable的区别？</h2><p>答：ConcurrentHashMap 结合了 HashMap 和 HashTable 二者的优势。HashMap 没有考虑同步，HashTable 考虑了同步的问题。但是 HashTable 在每次同步执行时都要锁住整个结构。ConcurrentHashMap 锁的方式是稍微细粒度的。</p>
+<p>面试官：ConcurrentHashMap的具体实现知道吗？**</p>
+<blockquote>
+<p>参考资料：<a href="http://www.importnew.com/23610.html" target="_blank" rel="noopener">http://www.importnew.com/23610.html</a></p>
+</blockquote>
+<p>答：<strong>在JDK1.7中，ConcurrentHashMap采用Segment + HashEntry的方式进行实现</strong>，结构如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FX6AhjvuFjlJrO74TTia3H8ib9J06X1ssZjibiaFXibcLJwZpnN2zTV9nGibQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<ol>
+<li>该类包含两个静态内部类 HashEntry 和 Segment ；前者用来封装映射表的键值对，后者用来充当锁的角色；</li>
+<li>Segment 是一种可重入的锁 ReentrantLock，每个 Segment 守护一个HashEntry 数组里得元素，当对 HashEntry 数组的数据进行修改时，必须首先获得对应的 Segment 锁。</li>
+</ol>
+<p>在<strong>JDK1.8中，放弃了Segment臃肿的设计，取而代之的是采用Node + CAS + Synchronized来保证并发安全进行实现</strong>，结构如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ia1kbU3RS1H6Yq0g7vN8wDd1ice2KnqQ5FCS3F2FryduzQQ9e8lP4ZwFPxz00Uw2bOQE8GfuEXfdkPBHCicBOtRmQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="img"></p>
+<p>插入元素过程（建议去看看源码）：</p>
+<ol>
+<li>如果相应位置的Node还没有初始化，则调用CAS插入相应的数据；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((f = tabAt(tab, i = (n - <span class="number">1</span>) &amp; hash)) == <span class="keyword">null</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> (casTabAt(tab, i, <span class="keyword">null</span>,<span class="keyword">new</span> Node&lt;K,V&gt;(hash, key, value, <span class="keyword">null</span>)))</span><br><span class="line">        <span class="keyword">break</span>; <span class="comment">// no lock when adding to empty bin</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>如果相应位置的Node不为空，且当前该节点不处于移动状态，则对该节点加synchronized锁，如果该节点的hash不小于0，则遍历链表更新节点或插入新节点；</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (fh &gt;= <span class="number">0</span>) &#123;    </span><br><span class="line">    binCount = <span class="number">1</span>;    </span><br><span class="line">    <span class="keyword">for</span> (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">        K ek;        </span><br><span class="line">        <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((ek = e.key) == key ||             (ek != <span class="keyword">null</span> &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">            oldVal = e.val;</span><br><span class="line">            <span class="keyword">if</span> (!onlyIfAbsent)</span><br><span class="line">                e.val = value;            <span class="keyword">break</span>;        &#125;        Node&lt;K,V&gt; pred = e;        <span class="keyword">if</span> ((e = e.next) == <span class="keyword">null</span>) &#123;            pred.next = <span class="keyword">new</span> Node&lt;K,V&gt;(hash, key, value, <span class="keyword">null</span>);            <span class="keyword">break</span>;        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>如果该节点是TreeBin类型的节点，说明是红黑树结构，则通过putTreeVal方法往红黑树中插入节点；如果binCount不为0，说明put操作对数据产生了影响，如果当前链表的个数达到8个，则通过treeifyBin方法转化为红黑树，如果oldVal不为空，说明是一次更新操作，没有对元素个数产生影响，则直接返回旧值；</li>
+<li>如果插入的是一个新节点，则执行addCount()方法尝试更新元素个数baseCount；</li>
+</ol>
+<h2 id="10-Java集合的快速失败机制-“fail-fast”？"><a href="#10-Java集合的快速失败机制-“fail-fast”？" class="headerlink" title="10. Java集合的快速失败机制 “fail-fast”？"></a>10. Java集合的快速失败机制 “fail-fast”？</h2><p>答：</p>
+<p><strong>是java集合的一种错误检测机制，当多个线程对集合进行结构上的改变的操作时，有可能会产生 fail-fast 机制。</strong></p>
+<p>例如：假设存在两个线程（线程1、线程2），线程1通过Iterator在遍历集合A中的元素，在某个时候线程2修改了集合A的结构（是结构上面的修改，而不是简单的修改集合元素的内容），那么这个时候程序就会抛出 ConcurrentModificationException 异常，从而产生fail-fast机制。</p>
+<p><strong>原因：迭代器在遍历时直接访问集合中的内容，并且在遍历过程中使用一个 modCount 变量。集合在被遍历期间如果内容发生变化，就会改变modCount的值。每当迭代器使用hashNext()/next()遍历下一个元素之前，都会检测modCount变量是否为expectedmodCount值，是的话就返回遍历；否则抛出异常，终止遍历。</strong></p>
+<p><strong>解决办法：</strong></p>
+<p><strong>1. 在遍历过程中，所有涉及到改变modCount值得地方全部加上synchronized。</strong></p>
+<p><strong>2. 使用CopyOnWriteArrayList来替换ArrayList</strong></p>
+<p>记住2点</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>利用Iterator操作集合更新操作，<span class="comment">remove、add</span></span><br><span class="line"><span class="number">2.</span>一个异常 ConcurrentModificationException</span><br></pre></td></tr></table></figure>
+
+<p>阿里代码规范也是这么规定的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 正例：  </span></span><br><span class="line"> List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line"> list.add(<span class="string">"1"</span>);  </span><br><span class="line"> list.add(<span class="string">"2"</span>);  </span><br><span class="line"> Iterator&lt;String&gt; iterator = list.iterator();  </span><br><span class="line"> <span class="keyword">while</span> (iterator.hasNext()) &#123;      </span><br><span class="line">     String item = iterator.next();      </span><br><span class="line">     <span class="keyword">if</span> (删除元素的条件) &#123;          </span><br><span class="line">         iterator.remove();      </span><br><span class="line">     &#125;  </span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">// 反例：      </span></span><br><span class="line"><span class="keyword">for</span> (String item : list) &#123;      </span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"1"</span>.equals(item)) &#123;          </span><br><span class="line">        list.remove(item);</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="11-HashMap直接背诵的内容"><a href="#11-HashMap直接背诵的内容" class="headerlink" title="11.HashMap直接背诵的内容"></a>11.HashMap直接背诵的内容</h2><p>hashmap是数组和链表的组合结构，数组是一个Entry数组，entry是k-V键值对类型，所以一个entry数组存着很entry节点，一个entry的位置通过key的hashcode方法，再进行hash（移位等操作），最后与表长-1进行相与操作，其实就是取hash值到的后n - 1位，n代表表长是2的n次方。</p>
+<p>hashmap的默认负载因子是0.75，阈值是16 * 0.75 = 12；初始长度为16；</p>
+<p>hashmap的增删改查方式比较简单，都是遍历，替换。有一点要注意的是key相等时，替换元素，不相等时连成链表。</p>
+<p>除此之外，1.8jdk改进了hashmap，当链表上的元素个数超过8个时自动转化成红黑树，节点变成树节点，以提高搜索效率和插入效率到logn。</p>
+<p>还有一点值得一提的是，hashmap的扩容操作，由于hashmap非线程安全，扩容时如果多线程并发进行操作，则可能有两个线程分别操作新表和旧表，导致节点成环，查询时会形成死锁。chm避免了这个问题。</p>
+<p>另外，扩容时会将旧表元素移到新表，原来的版本移动时会有rehash操作，每个节点都要rehash，非常不方便，而1.8改成另一种方式，对于同一个index下的链表元素，由于一个元素的hash值在扩容后只有两种情况，要么是hash值不变，要么是hash值变为原来值+2^n次方，这是因为表长翻倍，所以hash值取后n位，第一位要么是0要么是1，所以hash值也只有两种情况。这两种情况的元素分别加到两个不同的链表。这两个链表也只需要分别放到新表的两个位置即可，是不是很酷。</p>
+<p>最后有一个比较冷门的知识点，hashmap1.7版本链表使用的是节点的头插法，扩容时转移链表仍然使用头插法，这样的结果就是扩容后链表会倒置，而hashmap.1.8在插入时使用尾插法，扩容时使用头插法，这样可以保证顺序不变。</p>
+
+      
+    </div>
+    
+    
+    
+	
+
+    <!-- 添加文章已经阅读完 -->
+    <div>
+	
+	<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	
+    </div>
+    
+<div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>文章作者:</span>xiaofei</a></p>
+  <p><span>发布时间:</span>2020年04月16日 - 11:35:31</p>
+  <p><span>最后更新:</span>2020年04月16日 - 12:00:02</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+    
+</div>
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag"># Java基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/" rel="prev" title="[object Object]">
+                <i class="fa fa-chevron-left"></i> [object Object]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E4%B9%8BTreeMap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="next" title="[object Object]">
+                [object Object] <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="xiaofei" />
+            
+              <p class="site-author-name" itemprop="name">xiaofei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:821195692@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                      
+                        <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-说说常见的集合有哪些吧？"><span class="nav-number">1.</span> <span class="nav-text">1. 说说常见的集合有哪些吧？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HashMap与TreeMap、HashTable的区别及适用场景"><span class="nav-number">2.</span> <span class="nav-text">2. HashMap与TreeMap、HashTable的区别及适用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-HashMap扩容原理"><span class="nav-number">3.</span> <span class="nav-text">3. HashMap扩容原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-HashMap插入元素的过程"><span class="nav-number">4.</span> <span class="nav-text">4. HashMap插入元素的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-HashMap是怎么解决哈希冲突的？"><span class="nav-number">5.</span> <span class="nav-text">5. HashMap是怎么解决哈希冲突的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标？"><span class="nav-number">6.</span> <span class="nav-text">6. HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-HashMap在JDK1-7和JDK1-8中有哪些不同？"><span class="nav-number">7.</span> <span class="nav-text">7. HashMap在JDK1.7和JDK1.8中有哪些不同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-为什么HashMap中String、Integer这样的包装类适合作为K？"><span class="nav-number">8.</span> <span class="nav-text">8. 为什么HashMap中String、Integer这样的包装类适合作为K？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-ConcurrentHashMap和Hashtable的区别？"><span class="nav-number">9.</span> <span class="nav-text">9. ConcurrentHashMap和Hashtable的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Java集合的快速失败机制-“fail-fast”？"><span class="nav-number">10.</span> <span class="nav-text">10. Java集合的快速失败机制 “fail-fast”？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-HashMap直接背诵的内容"><span class="nav-number">11.</span> <span class="nav-text">11.HashMap直接背诵的内容</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaofei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '3bcebf684203c0c7aa22',
+      clientSecret: 'ef68f0a69f005abe10d1e71fad689e39900976ba',
+      repo: 'xfljm.github.io',
+      owner: 'xfljm',
+      admin: ['xfljm'],
+      id: location.pathname,
+      distractionFreeMode: 'true'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 前言（1）HTTP无状态？怎样解决？ 通常我们知道HTTP本身是无状态的，用户和服务器交互过程中，每个请求之间都没有关联性，这样就意味着用户的访问没有身份记录，站点也无法为用户提供个性化服务。 解决：session的诞生解决了这个问题，服务器和用户约定每个请求都携带一个id类的信息，从而让不同请求之间有了关联，而id又可以很方便地绑定具体用户，所以我们可以把不同请求归类到同一用户。但是仅仅使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringSecurity-6-SpringSecurity-会话管理">
+<meta property="og:url" content="http://xfljm.github.io/2020/SpringSecurity-6-SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="晓风残月的博客">
+<meta property="og:description" content="1. 前言（1）HTTP无状态？怎样解决？ 通常我们知道HTTP本身是无状态的，用户和服务器交互过程中，每个请求之间都没有关联性，这样就意味着用户的访问没有身份记录，站点也无法为用户提供个性化服务。 解决：session的诞生解决了这个问题，服务器和用户约定每个请求都携带一个id类的信息，从而让不同请求之间有了关联，而id又可以很方便地绑定具体用户，所以我们可以把不同请求归类到同一用户。但是仅仅使">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200305202847.png">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation.gif">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation2.gif">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation3.gif">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200307232312.jpg">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200307223055.png">
+<meta property="og:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation4.gif">
+<meta property="article:published_time" content="2020-03-05T07:03:17.693Z">
+<meta property="article:modified_time" content="2020-03-07T14:34:05.806Z">
+<meta property="article:author" content="xiaofei">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xfljm.github.io/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200305202847.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xfljm.github.io/2020/SpringSecurity-6-SpringSecurity-会话管理/"/>
+
+
+
+
+
+  <title>SpringSecurity-6-SpringSecurity-会话管理 | 晓风残月的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晓风残月的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xfljm.github.io/2020/SpringSecurity-6-SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaofei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晓风残月的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringSecurity-6-SpringSecurity-会话管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-05T15:03:17+08:00">
+                2020-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>（1）HTTP无状态？怎样解决？</p>
+<p>通常我们知道HTTP本身是无状态的，用户和服务器交互过程中，每个请求之间都没有关联性，这样就意味着用户的访问没有身份记录，站点也无法为用户提供个性化服务。</p>
+<p><strong>解决：</strong><code>session</code>的诞生解决了这个问题，服务器和用户约定每个请求都携带一个id类的信息，从而让不同请求之间有了关联，而id又可以很方便地绑定具体用户，所以我们可以把不同请求归类到同一用户。但是仅仅使用session增加了服务器的负担，将<code>cookie</code>作为载体，将得到更好的效果。</p>
+<p><strong>原理：</strong><span style="color:red">当用户首次访问系统时，系统会为该用户生成一个sessionId，并添加到cookie，在该用户的会话期内，每个请求都自动携带该因此系统可以很轻易地识别出这是来自哪个用户的请求。</span></p>
+<p>（2）固定会话攻击？</p>
+<p><strong>产生的原因：</strong>前面我们知道为了提供更好的体验，所以出现了session+cookie的组合。但是有时候用户会在浏览器中禁用cookie，因此提出了在url地址后面添加jession，例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://test.com;jessionid=xxx</span><br></pre></td></tr></table></figure>
+
+<p>虽然上述方式能够带来方便，当时却带了另一个问题——个人信息安全。因为黑客很容易获取到这个sessionId，从而在不需要用户账户密码的情况下访问系统。这就是典型的固定会话攻击问题。</p>
+<p>本节主要学习如下内容：</p>
+<p>（1）防御固定会话攻击（了解）</p>
+<p>（2）<code>session</code>超时处理</p>
+<p>（3）<code>session</code>并发控制</p>
+<p>（4）集群<code>session</code>管理</p>
+<h2 id="2-防御固定会话攻击"><a href="#2-防御固定会话攻击" class="headerlink" title="2. 防御固定会话攻击"></a>2. 防御固定会话攻击</h2><h3 id="2-1-原理分析"><a href="#2-1-原理分析" class="headerlink" title="2.1 原理分析"></a>2.1 原理分析</h3><p>在Spring Security中对于开启防御固定会话攻击很简单，只需要配置如下内容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                <span class="comment">//...</span></span><br><span class="line">            <span class="comment">//....</span></span><br><span class="line">            .sessionManagement() <span class="comment">// 开启防御固定会话攻击</span></span><br><span class="line">        ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的配置，其实在Spring Security已经默认配置。我们不妨看一下<code>WebSecurityConfigurerAdapter</code>的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Order</span>(<span class="number">100</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfigurerAdapter</span> <span class="keyword">implements</span></span></span><br><span class="line"><span class="class">		<span class="title">WebSecurityConfigurer</span>&lt;<span class="title">WebSecurity</span>&gt; </span>&#123;	</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 变量</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> disableDefaults;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//无参构造</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="title">WebSecurityConfigurerAdapter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(<span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 有参构造，所以我们可以知道创建这个实例后，disableDefaults为false</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="title">WebSecurityConfigurerAdapter</span><span class="params">(<span class="keyword">boolean</span> disableDefaults)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.disableDefaults = disableDefaults;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回一个HTTPSecurity</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> HttpSecurity <span class="title">getHttp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 如http已经存在，则不需要创建，直接返回即可</span></span><br><span class="line">    	<span class="keyword">if</span> (http != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> http;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//....</span></span><br><span class="line"></span><br><span class="line">    	<span class="comment">// 创建一个http</span></span><br><span class="line">		http = <span class="keyword">new</span> HttpSecurity(objectPostProcessor, authenticationBuilder,</span><br><span class="line">				sharedObjects);</span><br><span class="line">    	<span class="comment">// 由于disableDefaults为false，所以会进入</span></span><br><span class="line">		<span class="keyword">if</span> (!disableDefaults) &#123;</span><br><span class="line">			<span class="comment">// @formatter:off</span></span><br><span class="line">			http</span><br><span class="line">				.csrf().and()</span><br><span class="line">				.addFilter(<span class="keyword">new</span> WebAsyncManagerIntegrationFilter())</span><br><span class="line">				.exceptionHandling().and()</span><br><span class="line">				.headers().and()</span><br><span class="line">                <span class="comment">// 默认配置了sessionManagement</span></span><br><span class="line">				.sessionManagement().and()</span><br><span class="line">				.securityContext().and()</span><br><span class="line">				.requestCache().and()</span><br><span class="line">				.anonymous().and()</span><br><span class="line">				.servletApi().and()</span><br><span class="line">				.apply(<span class="keyword">new</span> DefaultLoginPageConfigurer&lt;&gt;()).and()</span><br><span class="line">				.logout();</span><br><span class="line">			<span class="comment">// ....</span></span><br><span class="line">		&#125;</span><br><span class="line">		configure(http);</span><br><span class="line">		<span class="keyword">return</span> http;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以发现在创建HttpSecurity时，实际上是配置了<code>sessionManagement()</code></p>
+<p><code>sessionManagement</code>是一个会话管理的配置器，其中，防御会话固定攻击的策略有四种：</p>
+<ul>
+<li><code>none</code>：不做任何变动，登录之后沿用旧session</li>
+<li><code>newSession</code> ：登录之后创建一个新的session</li>
+<li><code>migrateSession</code>：登录之后创建一个session，并将旧的session中的数据赋值过来</li>
+<li><code>changeSessionId</code>：不创建新的会话，而是使用由容器提供的会话固定保护。</li>
+</ul>
+<p>在Spring Security5中后默认优先使用的策略是<code>changeSessionId</code>，如果发生异常的情况下才会使用<code>migrateSession</code>方式。而在Spring Security4中默认使用的<code>migrateSession</code>。看一下源码，我们知道<code>sessionManagement</code>是由<code>SessionManagementConfigurer</code>配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionManagementConfigurer</span>&lt;<span class="title">H</span> <span class="keyword">extends</span> <span class="title">HttpSecurityBuilder</span>&lt;<span class="title">H</span>&gt;&gt;</span></span><br><span class="line"><span class="class">		<span class="keyword">extends</span> <span class="title">AbstractHttpConfigurer</span>&lt;<span class="title">SessionManagementConfigurer</span>&lt;<span class="title">H</span>&gt;, <span class="title">H</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> SessionAuthenticationStrategy DEFAULT_SESSION_FIXATION_STRATEGY = createDefaultSessionFixationProtectionStrategy();</span><br><span class="line">	<span class="keyword">private</span> SessionAuthenticationStrategy sessionFixationAuthenticationStrategy = <span class="keyword">this</span>.DEFAULT_SESSION_FIXATION_STRATEGY;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> SessionAuthenticationStrategy <span class="title">createDefaultSessionFixationProtectionStrategy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 默认有限使用ChangeSessionId</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> ChangeSessionIdAuthenticationStrategy();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (IllegalStateException e) &#123;</span><br><span class="line">            <span class="comment">// 当发生异常时使用migrateSession</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> SessionFixationProtectionStrategy();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样我们可以查看一下官方文档也有说明</p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200305202847.png" alt></p>
+<h3 id="2-2-具体实现"><a href="#2-2-具体实现" class="headerlink" title="2.2 具体实现"></a>2.2 具体实现</h3><p>可以自定义设置防御策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">       http.authorizeRequests()</span><br><span class="line">               .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">               .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">               .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">               .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">               .and()</span><br><span class="line">           .formLogin()</span><br><span class="line">               .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">               <span class="comment">//.failureHandler(new MyAuthenticationFailureHandler()) // 登录失败后的处理</span></span><br><span class="line">               .and()</span><br><span class="line">           .csrf()</span><br><span class="line">               .disable()</span><br><span class="line">           .sessionManagement()</span><br><span class="line">               .sessionFixation().migrateSession() <span class="comment">// 为默认的策略即可，不建议修改</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面虽然配置了防御策略，但是并不推荐配置该项，使用默认即可。</p>
+<h2 id="3-会话过期"><a href="#3-会话过期" class="headerlink" title="3. 会话过期"></a>3. 会话过期</h2><h3 id="3-1-原理分析"><a href="#3-1-原理分析" class="headerlink" title="3.1 原理分析"></a>3.1 原理分析</h3><p>（1）超时时间设置</p>
+<p>我们通常知道会话是由时间限制的，当超过这个时间限制后，会话是无效的。在基于springboot的方式下，可以在application.yml下配置会话有效时间</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">session:</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">PT30S</span>  <span class="comment"># 设置时间为30s，但是在SpringBoot中默认最小为1分钟</span></span><br></pre></td></tr></table></figure>
+
+<p>关于时间配置使用的是Jdk8中提供的<code>Duration</code>类，参考：<a href="https://www.cnblogs.com/ergexy/p/9684933.html" target="_blank" rel="noopener">SpringBoot session超时的问题</a></p>
+<blockquote>
+<ul>
+<li>默认为正，负以<code>-</code>开头</li>
+<li>紧接着<code>p</code></li>
+<li><code>D</code>表示天</li>
+<li><code>T</code>表示天和小时之间的分隔符</li>
+<li><code>H</code>表示小时</li>
+<li><code>M</code>表示分钟</li>
+<li><code>S</code>表示秒</li>
+</ul>
+</blockquote>
+<p>（2）设置超时策略</p>
+<p>通常发生超时后我们可以选择两个解决方法：设置跳转链接和指定超时策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.sessionManagement()</span><br><span class="line">    <span class="comment">// .sessionFixation().migrateSession() // 为默认的策略即可，不建议修改</span></span><br><span class="line">    <span class="comment">// .invalidSessionUrl("/session/invalid") // 会话过期时跳 转到某个URL。</span></span><br><span class="line">    .invalidSessionStrategy(<span class="keyword">new</span> MyInvalidSessionStrategy()) <span class="comment">// 自定义session过期策略 （和上面的跳转url，二选一）</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>设置跳转链接：</strong>只需要配置一个controller即可（省略）</p>
+<p><strong>设置超时策略：</strong>需要创建一个<code>MyInvalidSessionStrategy</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义的过期策略需要实现InvalidSessionStrategy接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvalidSessionStrategy</span> <span class="keyword">implements</span> <span class="title">InvalidSessionStrategy</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onInvalidSessionDetected</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">        response.getWriter().write(<span class="string">"session无效"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-具体实现"><a href="#3-2-具体实现" class="headerlink" title="3.2 具体实现"></a>3.2 具体实现</h3><p>实现一个当出现超时后给出提示功能</p>
+<p>（1）配置超时时间（上面已经配置，省略）</p>
+<p>（2）在configure中配置使用会话过期策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">       http.authorizeRequests()</span><br><span class="line">               .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">               .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">               .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">               .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">               .and()</span><br><span class="line">           .formLogin()</span><br><span class="line">               .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">               <span class="comment">//.failureHandler(new MyAuthenticationFailureHandler()) // 登录失败后的处理</span></span><br><span class="line">               .and()</span><br><span class="line">           .csrf()</span><br><span class="line">               .disable()</span><br><span class="line">           .sessionManagement()</span><br><span class="line">               <span class="comment">// .sessionFixation().migrateSession() // 为默认的策略即可，不建议修改</span></span><br><span class="line">               <span class="comment">// .invalidSessionUrl("/session/invalid") // 会话过期时跳 转到某个URL。</span></span><br><span class="line">               .invalidSessionStrategy(<span class="keyword">new</span> MyInvalidSessionStrategy()) </span><br><span class="line">       ;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）MyInvalidSessionStrategy类如上（省略）</p>
+<p>（4）启动项目</p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation.gif" alt></p>
+<h2 id="4-并发控制"><a href="#4-并发控制" class="headerlink" title="4. 并发控制"></a>4. 并发控制</h2><h3 id="4-1-并发会话数控制"><a href="#4-1-并发会话数控制" class="headerlink" title="4.1 并发会话数控制"></a>4.1 并发会话数控制</h3><p>并发控制，可以用来设置当个用户同时在线的最大会话数。</p>
+<p>设置并发的最大数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.sessionManagement()</span><br><span class="line">    <span class="comment">// .sessionFixation().migrateSession() // 为默认的策略即可，不建议修改</span></span><br><span class="line">    <span class="comment">// .invalidSessionUrl("/session/invalid") // 会话无效时跳 转到某个URL。</span></span><br><span class="line">    .invalidSessionStrategy(<span class="keyword">new</span> MyInvalidSessionStrategy()) <span class="comment">// 自定义session无效策略 （和上面的跳转url，二选一）</span></span><br><span class="line">    .maximumSessions(<span class="number">1</span>) <span class="comment">// 设置单个用户的最大并发数</span></span><br></pre></td></tr></table></figure>
+
+<p>上面设置了并发数为1，在默认情况下，如果有人使用当前用户的账号和密码登录，新登录用户的会话会踢掉就的会话。</p>
+<p>（2）在<code>ConcurrentSessionControlAuthenticationStrategy</code>类中给出了原因</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthentication</span><span class="params">(Authentication authentication,</span></span></span><br><span class="line"><span class="function"><span class="params">                             HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//.....</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取session的个数</span></span><br><span class="line">    <span class="keyword">int</span> sessionCount = sessions.size();</span><br><span class="line">    <span class="comment">// 获取允许的最大个数</span></span><br><span class="line">    <span class="keyword">int</span> allowedSessions = getMaximumSessionsForThisUser(authentication);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 如果当前存在的会话数等于允许的最大会话数</span></span><br><span class="line">    <span class="keyword">if</span> (sessionCount == allowedSessions) &#123;</span><br><span class="line">        HttpSession session = request.getSession(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (session != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (SessionInformation si : sessions) &#123;</span><br><span class="line">                <span class="comment">// 如果当前验证的会话并非新对话，则不做任何处理</span></span><br><span class="line">                <span class="keyword">if</span> (si.getSessionId().equals(session.getId())) &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 否则进行策略判断</span></span><br><span class="line">    allowableSessionsExceeded(sessions, allowedSessions, sessionRegistry);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">allowableSessionsExceeded</span><span class="params">(List&lt;SessionInformation&gt; sessions,</span></span></span><br><span class="line"><span class="function"><span class="params">                                         <span class="keyword">int</span> allowableSessions, SessionRegistry registry)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> SessionAuthenticationException </span>&#123;</span><br><span class="line">    <span class="comment">// exceptionIfMaximumExceeded指示了当用户达到最大会话数时，是否阻止新会话建立</span></span><br><span class="line">    <span class="keyword">if</span> (exceptionIfMaximumExceeded || (sessions == <span class="keyword">null</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> SessionAuthenticationException(messages.getMessage(</span><br><span class="line">            <span class="string">"ConcurrentSessionControlAuthenticationStrategy.exceededAllowed"</span>,</span><br><span class="line">            <span class="keyword">new</span> Object[] &#123; Integer.valueOf(allowableSessions) &#125;,</span><br><span class="line">            <span class="string">"Maximum sessions of &#123;0&#125; for this principal exceeded"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Determine least recently used session, and mark it for invalidation</span></span><br><span class="line">    SessionInformation leastRecentlyUsed = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (SessionInformation session : sessions) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((leastRecentlyUsed == <span class="keyword">null</span>)</span><br><span class="line">            || session.getLastRequest()</span><br><span class="line">            .before(leastRecentlyUsed.getLastRequest())) &#123;</span><br><span class="line">            leastRecentlyUsed = session;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 当新会话建立时，使最早的会话过期</span></span><br><span class="line">    leastRecentlyUsed.expireNow();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-2-前登录禁用后登录"><a href="#4-2-前登录禁用后登录" class="headerlink" title="4.2 前登录禁用后登录"></a>4.2 前登录禁用后登录</h3><p>前面我们知道了Spring Security默认提供的是踢掉就的会话，但是我们希望的是当在会话数达到最大时阻止新的会话创建，就可以有如下设置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.sessionManagement()</span><br><span class="line">    <span class="comment">// .sessionFixation().migrateSession() // 为默认的策略即可，不建议修改</span></span><br><span class="line">    <span class="comment">// .invalidSessionUrl("/session/invalid") // 会话过期时跳 转到某个URL。</span></span><br><span class="line">    .invalidSessionStrategy(<span class="keyword">new</span> MyInvalidSessionStrategy()) <span class="comment">// 自定义session过期策略 （和上面的跳转url，二选一）</span></span><br><span class="line">    .maximumSessions(<span class="number">1</span>) <span class="comment">// 设置单个用户的最大并发数</span></span><br><span class="line">    .maxSessionsPreventsLogin(<span class="keyword">true</span>) <span class="comment">// 阻止新会话登录，默认为false</span></span><br></pre></td></tr></table></figure>
+
+<p>当时上述配置后可能出现一个问题，当用户首先登录后，然后使用退出<code>/logout</code>，当下一次再登录就会出现下面错误。</p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation2.gif" alt></p>
+<p>在我退出之后，再次登录是无法登录的。出现上面的原因是因为Spring Security是通过监听session的销毁事件来触发会话信息表相关清理工作的，但我们并没有注册过相关的监听器，导致Spring Security无法正常清理过期或已注销的会话。</p>
+<p>解决方法：注册一个<code>bean</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> HttpSessionEventPublisher <span class="title">httpSessionEventPublisher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HttpSessionEventPublisher();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为在<code>servlet</code>中监听<code>session</code>相关事件的方法需要实现<code>HttpSessionListener</code>接口，并在系统中注册该监听器。在<code>Spring Security</code>中存在该类，为<code>HttpSessionEventPublisher</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpSessionEventPublisher</span> <span class="keyword">implements</span> <span class="title">HttpSessionListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LOGGER_NAME = HttpSessionEventPublisher<span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>()</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function">ApplicationContext <span class="title">getContext</span><span class="params">(ServletContext servletContext)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> SecurityWebApplicationContextUtils.findRequiredWebApplicationContext(servletContext);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 创建session</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionCreated</span><span class="params">(HttpSessionEvent event)</span> </span>&#123;</span><br><span class="line">		HttpSessionCreatedEvent e = <span class="keyword">new</span> HttpSessionCreatedEvent(event.getSession());</span><br><span class="line">		Log log = LogFactory.getLog(LOGGER_NAME);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (log.isDebugEnabled()) &#123;</span><br><span class="line">			log.debug(<span class="string">"Publishing event: "</span> + e);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 调用ApplicationEventPublisher，重新发布session创建事件</span></span><br><span class="line">		getContext(event.getSession().getServletContext()).publishEvent(e);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 销毁session</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sessionDestroyed</span><span class="params">(HttpSessionEvent event)</span> </span>&#123;</span><br><span class="line">		HttpSessionDestroyedEvent e = <span class="keyword">new</span> HttpSessionDestroyedEvent(event.getSession());</span><br><span class="line">		Log log = LogFactory.getLog(LOGGER_NAME);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (log.isDebugEnabled()) &#123;</span><br><span class="line">			log.debug(<span class="string">"Publishing event: "</span> + e);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 调用ApplicationEventPublisher，重新发布session创建事件</span></span><br><span class="line">		getContext(event.getSession().getServletContext()).publishEvent(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-3-后登录导致前登录无效"><a href="#4-3-后登录导致前登录无效" class="headerlink" title="4.3 后登录导致前登录无效"></a>4.3 后登录导致前登录无效</h3><p>当某个账号已经被登录了，另外一个人想利用这个账号进行登录。前面我们知道可以进行阻止，但是我们有时希望使用自己的策略，就可使用下面的配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.sessionManagement()</span><br><span class="line">    <span class="comment">// .sessionFixation().migrateSession() // 为默认的策略即可，不建议修改</span></span><br><span class="line">    <span class="comment">// .invalidSessionUrl("/session/invalid") // 会话过期时跳 转到某个URL。</span></span><br><span class="line">    .invalidSessionStrategy(<span class="keyword">new</span> MyInvalidSessionStrategy()) <span class="comment">// 自定义session过期策略 （和上面的跳转url，二选一）</span></span><br><span class="line">    .maximumSessions(<span class="number">1</span>) <span class="comment">// 设置单个用户的最大并发数</span></span><br><span class="line">    <span class="comment">// .maxSessionsPreventsLogin(true) // 阻止新会话登录，默认为false</span></span><br><span class="line">    <span class="comment">// .expiredUrl("/session/expired") // 需要自己另外实现一个controller（和下面二选一）</span></span><br><span class="line">    .expiredSessionStrategy(<span class="keyword">new</span> MyExpiredSessionStrategy())</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>MyExpiredSessionStrategy</code>类为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ublic <span class="class"><span class="keyword">class</span> <span class="title">MyExpiredSessionStrategy</span> <span class="keyword">implements</span> <span class="title">SessionInformationExpiredStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onExpiredSessionDetected</span><span class="params">(SessionInformationExpiredEvent event)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletResponse response = event.getResponse();</span><br><span class="line">        response.setContentType(<span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">        response.getWriter().write(<span class="string">"你已经在另一个地方登录！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation3.gif" alt></p>
+<p>首先在第一个浏览器中登录账号<code>admin</code>，然后在另外一个账号登录相同账号。由于不阻止新会话登录（<code>maxSessionsPreventsLogin(false)</code>，这是默认的配置），所以后者是可以登录成功的，但是会踢掉前者登录，这也是为什么前者将会显示<span style="color:red">你已经在另一个地方登录！</span>。</p>
+<p><strong>【注意】</strong></p>
+<p>在并发控制方面，如果采用的是基于内存的登录，那么没有任何问题。但是如果是基于自定义的数据库模型，需要再实现<code>UserDetails</code>的类中添加<code>hashcode</code>和<code>equals</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">UserDetails</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">	</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        User user = (User) o;</span><br><span class="line">        <span class="keyword">return</span> Objects.equals(username, user.username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hash(username);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因分析：</p>
+<p>在Spring Security中采用的会话信息表来管理用户会话状态，具体实现可以参考<code>SessionRegistryImpl</code>类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionRegistryImpl</span> <span class="keyword">implements</span> <span class="title">SessionRegistry</span>,</span></span><br><span class="line"><span class="class">		<span class="title">ApplicationListener</span>&lt;<span class="title">SessionDestroyedEvent</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//....     </span></span><br><span class="line">    <span class="comment">// 存放用户以及其对应的所有sessionId的map （需要注意的是数据结构是Map）      </span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> ConcurrentMap&lt;Object, Set&lt;String&gt;&gt; principals;</span><br><span class="line">	<span class="comment">// 存放sessionId以及其对应的SessionInformation （数据结构是Map）</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, SessionInformation&gt; sessionIds;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//.....</span></span><br><span class="line">            </span><br><span class="line">    <span class="comment">// 用于处理SessionDestryEvent事件        </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(SessionDestroyedEvent event)</span> </span>&#123;</span><br><span class="line">		String sessionId = event.getId();</span><br><span class="line">        <span class="comment">// 当会话销毁事件被触发时，移除对应的sessionId的相关数据</span></span><br><span class="line">		removeSessionInformation(sessionId);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//....</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 注册新的会话	        </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerNewSession</span><span class="params">(String sessionId, Object principal)</span> </span>&#123;</span><br><span class="line">		Assert.hasText(sessionId, <span class="string">"SessionId required as per interface contract"</span>);</span><br><span class="line">		Assert.notNull(principal, <span class="string">"Principal required as per interface contract"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Registering session "</span> + sessionId + <span class="string">", for principal "</span></span><br><span class="line">					+ principal);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (getSessionInformation(sessionId) != <span class="keyword">null</span>) &#123;</span><br><span class="line">			removeSessionInformation(sessionId);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		sessionIds.put(sessionId,</span><br><span class="line">				<span class="keyword">new</span> SessionInformation(principal, sessionId, <span class="keyword">new</span> Date()));</span><br><span class="line">		<span class="comment">// 判断该用户是否已经存在</span></span><br><span class="line">		Set&lt;String&gt; sessionsUsedByPrincipal = principals.computeIfAbsent(principal, key -&gt; <span class="keyword">new</span> CopyOnWriteArraySet&lt;&gt;());</span><br><span class="line">		sessionsUsedByPrincipal.add(sessionId);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">			logger.trace(<span class="string">"Sessions used by '"</span> + principal + <span class="string">"' : "</span></span><br><span class="line">					+ sessionsUsedByPrincipal);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 移除对应会话信息        </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeSessionInformation</span><span class="params">(String sessionId)</span> </span>&#123;</span><br><span class="line">		Assert.hasText(sessionId, <span class="string">"SessionId required as per interface contract"</span>);</span><br><span class="line"></span><br><span class="line">		SessionInformation info = getSessionInformation(sessionId);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (info == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Removing session "</span> + sessionId</span><br><span class="line">					+ <span class="string">" from set of registered sessions"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 从SessionIds中移除对应的sessionId</span></span><br><span class="line">		sessionIds.remove(sessionId);</span><br><span class="line">		<span class="comment">// 获取对应用户的所有sessionId</span></span><br><span class="line">		Set&lt;String&gt; sessionsUsedByPrincipal = principals.get(info.getPrincipal());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 没有，则直接返回</span></span><br><span class="line">		<span class="keyword">if</span> (sessionsUsedByPrincipal == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Removing session "</span> + sessionId</span><br><span class="line">					+ <span class="string">" from principal's set of registered sessions"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 存在，则做对应的清理工作</span></span><br><span class="line">		sessionsUsedByPrincipal.remove(sessionId);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (sessionsUsedByPrincipal.isEmpty()) &#123;</span><br><span class="line">			<span class="comment">// No need to keep object in principals Map anymore</span></span><br><span class="line">			<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">				logger.debug(<span class="string">"Removing principal "</span> + info.getPrincipal()</span><br><span class="line">						+ <span class="string">" from registry"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			principals.remove(info.getPrincipal());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">			logger.trace(<span class="string">"Sessions used by '"</span> + info.getPrincipal() + <span class="string">"' : "</span></span><br><span class="line">					+ sessionsUsedByPrincipal);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过源码我们知道<code>principals</code>采用了以用户信息为key的设计。我们知道，在hashMap中，以对象为key必须覆写hashCode和equals两个方法（具体原因可以查阅hashMap的设计），但我们实现UserDetails时并没有这么做，这导致同一个用户每次登录注销时计算得到的key都不相同，所以每次登录都会向principals中添加一个用户，而注销时却从来不能有效移除。在这种情况下，不仅达不到会话并发控制的效果，还会引发内存泄露。</p>
+<h2 id="5-集群Session管理"><a href="#5-集群Session管理" class="headerlink" title="5. 集群Session管理"></a>5. 集群Session管理</h2><h3 id="5-1-原理分析"><a href="#5-1-原理分析" class="headerlink" title="5.1 原理分析"></a>5.1 原理分析</h3><p>在部署应用时，搭建至少两台机器的集群环境，防止一台服务器出现问题而服务中断，这样在一台机器在停止服务时，另一台机器还能继续提供服务。</p>
+<p>而使用集群，在基于<code>Session</code>的身份认证就会导致问题：一个用户登录成功后，其<code>Session</code>存放在<code>A</code>机器上，而如果<code>Session</code>不做其他处理，在用户操作时，在负载均衡下，可能会请求发到<code>B</code>机器上，而<code>B</code>机器无<code>Session</code>导致无权限访问而需要再次登录。</p>
+<p>而解决集群中<code>Session</code>的管理，可以把<code>Session</code>抽取出来为一个独立存储，用户请求需要<code>Session</code>时都会读取该存储<code>Session</code></p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200307232312.jpg" alt></p>
+<p>解决集群会话的常见解决方案有三种：</p>
+<ul>
+<li><code>session</code>保持：采用IP哈希负载策略，将来自相同客户端的请求转发至相同的服务器上处理。<span style="color:red">存在问题</span>，就是假设某个部分采用相同的源IP，然后通过路由给不同的用户分配不同的内网，但是最终使用的源IP还是相同的，如果将这些员工的请求都转发到相同的服务器上，存在一定的负载失衡。</li>
+<li><code>session</code>复制：指服务器之间同步session数据，以达到各个实例之间会话状态一致的做法。<span style="color:red">存在问题</span>，就是同步需要消耗数据带宽，同时占用大量的资源。</li>
+<li><code>session</code>共享（推荐做法）：指将 <code>session</code> 从服务器内存抽离出来，集中存储到独立的数据容器，并由各个服务器共享。</li>
+</ul>
+<p>这里使用<code>redis</code>作为<code>Session</code>存储管理，而<code>Spring Session</code>支持以下方式存储<code>Session</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> StoreType &#123;</span><br><span class="line">    REDIS,</span><br><span class="line">    MONGODB,</span><br><span class="line">    JDBC,</span><br><span class="line">    HAZELCAST,</span><br><span class="line">    NONE;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">StoreType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为什么使用<code>redis</code>：</p>
+<ol>
+<li><code>redis</code>在大多数项目中使用来做缓存，查询速度快</li>
+<li><code>Session</code>是有时间限制的，<code>redis</code>本身自带过期时间</li>
+</ol>
+</blockquote>
+<h3 id="5-2-具体实现"><a href="#5-2-具体实现" class="headerlink" title="5.2 具体实现"></a>5.2 具体实现</h3><p>（1）在application.yml中配置如下内容</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">    <span class="attr">session:</span></span><br><span class="line">        <span class="attr">store-type:</span> <span class="string">redis</span> <span class="comment"># session的存储类型为redis</span></span><br><span class="line">        <span class="attr">redis:</span></span><br><span class="line">          <span class="attr">flush-mode:</span> <span class="string">on_save</span> <span class="comment"># ON_SAVE在调用#SessionRepository#save(Session)时，在response commit前刷新缓存</span></span><br><span class="line">          <span class="attr">namespace:</span> <span class="string">spring:session</span> <span class="comment"># 存储session密钥的命名空间</span></span><br><span class="line">    <span class="attr">redis:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.52</span><span class="number">.10</span> <span class="comment"># 其余配置默认即可</span></span><br></pre></td></tr></table></figure>
+
+<p>（2）使用不同端口启动程序（分别以8080和8081）</p>
+<p>点击”Run”——&gt;”Edit configureations”,设置如下内容</p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/20200307223055.png" alt></p>
+<p>（3）启动8080，然后在application.yml中设置<code>server.port=8081</code>，然后启动该8081。最终实验结果如下：</p>
+<p><img src="/images/6.SpringSecurity-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86/Animation4.gif" alt></p>
+<p>可以发现，虽然我是在8080服务上进行登录，但是在8081可以免登录，从而说明session被共用了。</p>
+<p>参考资料</p>
+<ul>
+<li><p><a href="https://www.jianshu.com/p/b9332491f500" target="_blank" rel="noopener">Spring Security源码分析九：Spring Security Session管理</a></p>
+</li>
+<li><p><a href="https://www.jianshu.com/p/caa1d35d3524" target="_blank" rel="noopener">Spring Security集群Session管理</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+	
+
+    <!-- 添加文章已经阅读完 -->
+    <div>
+	
+	<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	
+    </div>
+    
+<div>
+    
+        
+    
+</div>
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/SpringSecurity-7-SpringSecurity-%E5%AF%86%E7%A0%81%E8%AE%BE%E7%BD%AE/" rel="prev" title="SpringSecurity-7-SpringSecurity-密码设置">
+                <i class="fa fa-chevron-left"></i> SpringSecurity-7-SpringSecurity-密码设置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/" rel="next" title="SpringSecurity-5-SpringSecurity-实现自动登录和自动注销">
+                SpringSecurity-5-SpringSecurity-实现自动登录和自动注销 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="xiaofei" />
+            
+              <p class="site-author-name" itemprop="name">xiaofei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:821195692@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                      
+                        <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-防御固定会话攻击"><span class="nav-number">2.</span> <span class="nav-text">2. 防御固定会话攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-原理分析"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 原理分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-具体实现"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-会话过期"><span class="nav-number">3.</span> <span class="nav-text">3. 会话过期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-原理分析"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 原理分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-具体实现"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 具体实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-并发控制"><span class="nav-number">4.</span> <span class="nav-text">4. 并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-并发会话数控制"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 并发会话数控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-前登录禁用后登录"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 前登录禁用后登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-后登录导致前登录无效"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 后登录导致前登录无效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-集群Session管理"><span class="nav-number">5.</span> <span class="nav-text">5. 集群Session管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-原理分析"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 原理分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-具体实现"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 具体实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaofei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '3bcebf684203c0c7aa22',
+      clientSecret: 'ef68f0a69f005abe10d1e71fad689e39900976ba',
+      repo: 'xfljm.github.io',
+      owner: 'xfljm',
+      admin: ['xfljm'],
+      id: location.pathname,
+      distractionFreeMode: 'true'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

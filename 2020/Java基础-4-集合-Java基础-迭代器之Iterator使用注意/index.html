@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java基础," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[TOC] 1. 前言在Java集合中常常会使用到迭代器Iterator，并且我们知道Collection接口也继承了Iterator接口，所以只要是Collection的实现类，那么一定具备有迭代器功能。通过迭代器，开发人员不需要了解容器底层的结构，就可以实现对容器的遍历。由于创建迭代器的代价小，因此迭代器通常称为轻量级容器。 123public interface Collection&lt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[object Object]">
+<meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/index.html">
+<meta property="og:site_name" content="晓风残月的博客">
+<meta property="og:description" content="[TOC] 1. 前言在Java集合中常常会使用到迭代器Iterator，并且我们知道Collection接口也继承了Iterator接口，所以只要是Collection的实现类，那么一定具备有迭代器功能。通过迭代器，开发人员不需要了解容器底层的结构，就可以实现对容器的遍历。由于创建迭代器的代价小，因此迭代器通常称为轻量级容器。 123public interface Collection&lt;">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClB9xcW7hkVEL81W2vDnCP75P3vE9KjZFjp0stgReicxMrJeplNEX6FKw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClX3TkTA4snvrkYVaxSrxKlfPcpVYfmbfJkzyboBKBZXQBARMDpU6bQg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClQZnmuACZCgajcJPO133iczS1g44WPjrn5PcUAAbY1pcvjwnHlbpNuqQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClNQ5m1D9u4RFvYP9dBQ8s6fPSHKJyaVf7zwTQYJvB96D7E1G0SCtx5g/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClWWY13rQr3Cj1ayX6cJPpKXDjRhrhC7Ht9wURPPYzqp67dThW5IRAjA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClzcrTudJW4NJr4Fl2W6KlA2Pr7mHQ1MZRDlibEssvDBJ4GicJNNGL1n1A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClwP1tNqp4HEdyZGgs87sHPIjrGibcoyD7uhoTeMiacwictn62GBcnLPqlA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl2uaCwxiakKw3Es5GkI1U5k9BurFNaibgL39icXsSPcK5yEZEm4aF7xd3A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClXyEN5uOVxhduKW84MObsEFTxqZZgVZoKR6cBOcicc7M9Hy05DoxZaqQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClg37auZ3y4YzGebibwUZOzrF0BQMsOOeAGPPcgrfJdswnTlgicPw3mkKQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClRyEAtPrA9ebvLicvas9J1HJmMe3VPicJFXgIDCqqxps5yOKpsx39QPUA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClzZdfLbYl1KBOtPOeV4jjqTQPoWW5eUnicFsTDxNyb0E63kxfG92XhDw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClHBpcHyp8vyq4glia1Dg3FZpInnyDmzLUJkLp1EDT5mfnEovibCuwZia9w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClice2e1XEYVkibchDPtEO39ukXZdy0gmpnPlETVfm6FdYLJXm5uzAABjQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl807mIgj0zmPsl3v3Tnj2QaUqIPAAge773ltXj5kcexjcDb2HjfXWcg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClgLxbAZpUOLzEIgKmomePPz4MokJ7TF00l80Qr5MSB2HeEmU6C1G4tQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCldic7rY1Qc4NbGPYEuOeNEDL6lfcibowl0G9va2UH12EVUBUTqEI6tlMw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClUjicIjyibowIeuBfbkznglbtcUAX78V1jjwufpvpLnial1RUToFUcK1iaQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClFI8tBAcNa7bLZPwYgSFiaG68Oj9xCvIW3Uk9LaVuLcnMNQh4gqIfnbw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClrk0j0qYXwgiceQqOdtCx7nkOeHDwaX32XwQPLsGdojMkZJXEko2h62w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl6TKfuic1l3nmAr7RZK2wmGrAWic8YxMKwGaJ63evcOzF77NvMdNMayuA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2020-04-16T03:35:31.972Z">
+<meta property="article:modified_time" content="2020-04-16T04:05:56.396Z">
+<meta property="article:author" content="xiaofei">
+<meta property="article:tag" content="Java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClB9xcW7hkVEL81W2vDnCP75P3vE9KjZFjp0stgReicxMrJeplNEX6FKw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://xfljm.github.io/2020/Java基础-4-集合-Java基础-迭代器之Iterator使用注意/"/>
+
+
+
+
+
+  <title>[object Object] | 晓风残月的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">晓风残月的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaofei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="晓风残月的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-16T11:35:31+08:00">
+                2020-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">Java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>在Java集合中常常会使用到迭代器Iterator，并且我们知道Collection接口也继承了Iterator接口，所以只要是Collection的实现类，那么一定具备有迭代器功能。通过迭代器，开发人员不需要了解容器底层的结构，就可以实现对容器的遍历。由于创建迭代器的代价小，因此迭代器通常称为轻量级容器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Iterable</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面看看ArrayList中对Iterator实现</p>
+<p>（1）在ArrayList中存在如下方法，用于放回一个Iterator对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）在ArrayList内部类中存在下面三个主要方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断容器中是否还有元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 获取下一个元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 删除迭代器返回的元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">// 使用lambda表达式迭代 </span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">forEachRemaining</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> E&gt; consumer)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>对于最后一个方式，这里举一个例子说明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"zhangsan"</span>);</span><br><span class="line">    list.add(<span class="string">"lisi"</span>);</span><br><span class="line">    list.add(<span class="string">"wangwu"</span>);</span><br><span class="line"></span><br><span class="line">    Iterator&lt;String&gt; iterator = list.iterator();</span><br><span class="line">    iterator.forEachRemaining(data-&gt;&#123;</span><br><span class="line">        System.out.println(data);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-问题提出"><a href="#2-问题提出" class="headerlink" title="2. 问题提出"></a>2. 问题提出</h2><p>经常有一个说法：<span style="color:red"><strong>使用Iterator遍历容器时不能对容器做增加或删除操作</strong></span></p>
+<p>否则将报一个异常：<code>ConcurrentModificationException</code></p>
+<p>【注意】增强for是jdk1.5提出，其内部实现原理仍然是一个迭代器。</p>
+<h2 id="3-问题探究"><a href="#3-问题探究" class="headerlink" title="3. 问题探究"></a>3. 问题探究</h2><p>【案例1】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line">    list.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String s: list)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(s))&#123;</span><br><span class="line">            list.remove(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过前面的学习，可以知道这段代码一定有问题的，违背了前面的规则。但是当运行代码的时候，输出结果如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClB9xcW7hkVEL81W2vDnCP75P3vE9KjZFjp0stgReicxMrJeplNEX6FKw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>结果傻眼了，居然正常输出没有报错，而且结果还是正确的！于是我又改动了一下代码</p>
+<p>【代码修改1】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"2"</span>);</span><br><span class="line">    <span class="comment">// 在“3”的前面添加一个“2”</span></span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line">    list.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String s: list)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(s))&#123;</span><br><span class="line">            list.remove(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClX3TkTA4snvrkYVaxSrxKlfPcpVYfmbfJkzyboBKBZXQBARMDpU6bQg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>发现结果还是正确的。</p>
+<p>【代码修改2】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"2"</span>);</span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line">    <span class="comment">// 在“3”的后面添加“4”</span></span><br><span class="line">    list.add(<span class="string">"4"</span>);</span><br><span class="line">    list.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String s: list)&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(s))&#123;</span><br><span class="line">            list.remove(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClQZnmuACZCgajcJPO133iczS1g44WPjrn5PcUAAbY1pcvjwnHlbpNuqQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>这一次终于出现了期待已久的报错。</p>
+<h2 id="4-源码分析"><a href="#4-源码分析" class="headerlink" title="4. 源码分析"></a>4. 源码分析</h2><h3 id="4-1-基本问题分析"><a href="#4-1-基本问题分析" class="headerlink" title="4.1 基本问题分析"></a>4.1 基本问题分析</h3><p>在控制台打印的日志显示，在 <code>java.util.ArrayList$Itr.next()</code>内部的 <code>checkForComodification()</code>方法。定位到ArrayList源码指定位置，如下图标识红框位置：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClNQ5m1D9u4RFvYP9dBQ8s6fPSHKJyaVf7zwTQYJvB96D7E1G0SCtx5g/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>这个方法的逻辑非常简单。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClWWY13rQr3Cj1ayX6cJPpKXDjRhrhC7Ht9wURPPYzqp67dThW5IRAjA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>那<code>modCount</code>和<code>expectedModCount</code>又是何方神圣？跟着来到定义他们的地方。熟悉ArrayList源码的就可以知道<code>modCount</code>和<code>expectedModCount</code>通常是为了防止在多线程情况下，一个线程使用迭代器遍历容器，与此同时另一个线程对这个容器进行增加或者删除操作。当这两个变量不一致时，就会报一个<code>ConcurrentModificationException</code>异常。</p>
+<h3 id="4-2-分步调试"><a href="#4-2-分步调试" class="headerlink" title="4.2 分步调试"></a>4.2 分步调试</h3><p>首先在ArrayList中的内部类Ite类处打上两处debug调试点。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClzcrTudJW4NJr4Fl2W6KlA2Pr7mHQ1MZRDlibEssvDBJ4GicJNNGL1n1A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>我们就以开头的那三个例子最后一个报错的为例，开始debug。</p>
+<p>刚开始list添加了5个元素，size等于5。由前面得知，add操作属于结构性操作，会导致 <code>modCount++</code>。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClwP1tNqp4HEdyZGgs87sHPIjrGibcoyD7uhoTeMiacwictn62GBcnLPqlA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>Itr迭代器的游标cursor值会从0开始随着元素的遍历移动。hasNext()通过判断 <code>cursor!=size</code>来确定list是否还有下一个元素取出。如果返回true，则会进入next()用来返回下一个元素。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl2uaCwxiakKw3Es5GkI1U5k9BurFNaibgL39icXsSPcK5yEZEm4aF7xd3A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>显然我们有5个元素，可以进入next()。而在next方法中，第一行代码就是checkForComodification()用来校验expectedModCount和modCount的一致性。显然从List添加完元素到现在为止，我们没有再对list有过额外的结构性操作，自然前面3次迭代都不会抛出异常，正常返回元素。都如图所示。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClXyEN5uOVxhduKW84MObsEFTxqZZgVZoKR6cBOcicc7M9Hy05DoxZaqQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>并且每次执行完next()后，cursor会往后移动一位，为迭代下一个元素做准备。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClg37auZ3y4YzGebibwUZOzrF0BQMsOOeAGPPcgrfJdswnTlgicPw3mkKQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>这个时候轮到迭代第三个元素”3”了。自然if条件判断成立，会进入删除操作。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClRyEAtPrA9ebvLicvas9J1HJmMe3VPicJFXgIDCqqxps5yOKpsx39QPUA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>跟进remove()方法源码中，确实发现了 <code>modCount++</code>。也就是说，这个时候modCount值已经变成6了。而expectedModCount依然还是保存着初始值5。此时两者不一致了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClzZdfLbYl1KBOtPOeV4jjqTQPoWW5eUnicFsTDxNyb0E63kxfG92XhDw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClHBpcHyp8vyq4glia1Dg3FZpInnyDmzLUJkLp1EDT5mfnEovibCuwZia9w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>因为list在“3”之后还有“4”，“5”两个元素，因此当删除“3”元素之后，迭代器还会继续迭代，重复之前的流程，会先进入hasNext()，此时cursor等于3，size等于4，自然还是满足的，所以还是会继续进入next()取出下一个元素。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClice2e1XEYVkibchDPtEO39ukXZdy0gmpnPlETVfm6FdYLJXm5uzAABjQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>可以预料此时checkForComodification()校验expectedModCount和modCount已经不一致了，所以抛出了ConcurrentModificationException。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl807mIgj0zmPsl3v3Tnj2QaUqIPAAge773ltXj5kcexjcDb2HjfXWcg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<h3 id="4-3-初步总结"><a href="#4-3-初步总结" class="headerlink" title="4.3 初步总结"></a>4.3 初步总结</h3><p>也就是说，在forEach或者迭代器中调用对集合的结构性操作会导致modCount值发生修改，而expectedModCount的值仍然是初始化值，所以在next()中校验不通过抛出异常。所以应该使用迭代器的删除操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"2"</span>);</span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line">    list.add(<span class="string">"4"</span>);</span><br><span class="line">    list.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">    Iterator&lt;String&gt; it = list.iterator();</span><br><span class="line">    <span class="keyword">while</span> (it.hasNext())&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(it.next()))&#123;</span><br><span class="line">            it.remove();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是老师教的正确姿势。结果当然是正确的。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClgLxbAZpUOLzEIgKmomePPz4MokJ7TF00l80Qr5MSB2HeEmU6C1G4tQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<h3 id="4-4-再探虎穴"><a href="#4-4-再探虎穴" class="headerlink" title="4.4 再探虎穴"></a>4.4 再探虎穴</h3><p>要搞清楚这中间的区别，当然还是需要深入虎穴，再去看看List迭代器remove方法的源码了。下面代码中主要关注红框的2行，第一行作用是删除被迭代的元素， <code>ArrayList.this.remove</code>这个是调用外部类ArrayList的remove方法，上面已经说过了，集合的remove方法是结构性操作，会导致modCount++的，这样等迭代下一个元素时，调用next()时校验expectedModCount和modCount一致性必然会报错，为了防止这个问题，所以下一行 <code>expectedModCount=modCount</code>将expectedModCount更新至modCount最新值，使得一致性不被破坏。这也是为什么使用迭代器自带的remove方法并不会抛出异常的原因。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCldic7rY1Qc4NbGPYEuOeNEDL6lfcibowl0G9va2UH12EVUBUTqEI6tlMw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>怎么样？是不是感觉大功告成了，感觉自己要飘了……</p>
+<p>然而，这只是解释了文章开头3个例子的最后一个，那为什么前两个可以正常删除没有报错？说实话，我当时遇到这问题的内心是崩溃到怀疑人生的。</p>
+<p>还是没有好的办法，继续来debug一下前面的例子，看看会有什么不同的事情发生吧。</p>
+<p>List中前面的元素的遍历过程和上面是一样的，不再赘述。直接看关键处，如下图，这个时候已经遍历到“3”这个元素了，即将开始remove操作，remove操作也和上面一样，会调用fastRemove()删除元素，fastRemove()也确实会执行 <code>modCount++</code>，确实导致了 <code>expectedModCount!=modCount</code>。但是……</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClUjicIjyibowIeuBfbkznglbtcUAX78V1jjwufpvpLnial1RUToFUcK1iaQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>当将要迭代下一个元素的时候，还是会进入hashNext()做判断，很遗憾，这个时候cursor和size都是2，也就是hashNext()条件不成立返回false，也就不会再进入next()方法，自然也就不会再去调用checkForComodification()做校验，也就不会再有机会抛异常了。其实这个时候，list中最后一个元素”5”根本也就没遍历到。为了验证这一点，可以在for循环中添加输出代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line">    list.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(Object o: list) &#123;</span><br><span class="line">        System.out.println(o);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(s)) &#123;</span><br><span class="line">            list.remove(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会发现只会输出1和3。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClFI8tBAcNa7bLZPwYgSFiaG68Oj9xCvIW3Uk9LaVuLcnMNQh4gqIfnbw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>事情还没完，最后再来一种情况，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    list.add(<span class="string">"1"</span>);</span><br><span class="line">    list.add(<span class="string">"2"</span>);</span><br><span class="line">    list.add(<span class="string">"3"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(Object o: list) &#123;</span><br><span class="line">        System.out.println(o);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"3"</span>.equals(s)) &#123;</span><br><span class="line">            list.remove(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>猜猜结果是啥？有人会认为，不是和文章第一个例子一模一样的吗？那就是成功删除了啊，输出1和2啊。呵呵🙄，让您失望了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zClrk0j0qYXwgiceQqOdtCx7nkOeHDwaX32XwQPLsGdojMkZJXEko2h62w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>是不是又怀疑人生了？其实有了前面这么多的铺垫，这个错误原因已经不难推断发现了。</p>
+<p>原因还是在这里。前面“1”，“2”两个元素遍历完毕肯定是没问题的，当开始遍历“3”时候，通过next()返回元素“3”，cursor此时会增加到3，而size由于后面会调用remove减为2了，这个时候hasNext()里的条件返回true又成立啦！我的乖乖……所以Itr迭代器又会傻傻的去调用next()，后面的事情就都知道了，checkForComodification()又被调用了，抛出ConcurrentModificationException异常。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/5j8oo6Mib4zLML8teTBKXoz1qu5C01zCl6TKfuic1l3nmAr7RZK2wmGrAWic8YxMKwGaJ63evcOzF77NvMdNMayuA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt></p>
+<p>其实通过上述的整个分析过程，可以总结出一点结论：其实整个过程的问题关键所在就是 <code>java.util.ArrayList$Itr</code>的hasNext()方法的逻辑。不难看出，每当迭代器返回一个元素时，元素在列表中的索引等于Itr的cursor值，而每次删除一个元素会导致 <code>size--</code>，不难推断出，如果你要删除的元素恰好位于List倒数第二个位置，则并不会抛出异常，并且会显示正确的删除操作，就像文章开头第一个例子，其余情况都会抛出异常。但是就算是不抛异常的情况，其实此时List迭代器内部的expectedModCount 和modCount一致性已经遭到了破坏，只是被掩盖了，所以这样的操作后续可能会有非常大的隐患，个人不建议这样使用，需要在迭代过程操作集合的还是应该用迭代器的方法。</p>
+<p>另外，其实除了ArrayList以外，会发现HashMap中也会有modCount属性，而在其相应的结构性操作方法内部，如put()、clear()等都会有对 <code>modCount++</code>操作，而在HashMap内部也有一个内部迭代器HashIterator，内部会维护一个expectedModCount属性，其余的套路就都和ArrayList类似了。</p>
+<p>参考资料</p>
+<p> <a href="https://mp.weixin.qq.com/s/CfCLUr7DtiTVOowpfZf4DQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/CfCLUr7DtiTVOowpfZf4DQ</a> </p>
+
+      
+    </div>
+    
+    
+    
+	
+
+    <!-- 添加文章已经阅读完 -->
+    <div>
+	
+	<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+	
+    </div>
+    
+<div>
+    
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>文章作者:</span>xiaofei</a></p>
+  <p><span>发布时间:</span>2020年04月16日 - 11:35:31</p>
+  <p><span>最后更新:</span>2020年04月16日 - 12:05:56</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+    
+</div>
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag"># Java基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B9%8BListIterator%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/" rel="prev" title="[object Object]">
+                <i class="fa fa-chevron-left"></i> [object Object]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="[object Object]">
+                [object Object] <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="xiaofei" />
+            
+              <p class="site-author-name" itemprop="name">xiaofei</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:821195692@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                      
+                        <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-问题提出"><span class="nav-number">2.</span> <span class="nav-text">2. 问题提出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-问题探究"><span class="nav-number">3.</span> <span class="nav-text">3. 问题探究</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-源码分析"><span class="nav-number">4.</span> <span class="nav-text">4. 源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-基本问题分析"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 基本问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-分步调试"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 分步调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-初步总结"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 初步总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-再探虎穴"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 再探虎穴</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaofei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 访问总量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '3bcebf684203c0c7aa22',
+      clientSecret: 'ef68f0a69f005abe10d1e71fad689e39900976ba',
+      repo: 'xfljm.github.io',
+      owner: 'xfljm',
+      admin: ['xfljm'],
+      id: location.pathname,
+      distractionFreeMode: 'true'
+    })
+    gitalk.render('gitalk-container')
+  </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
