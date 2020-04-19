@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="1、起源​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 @Transactional等注解。到了2.x时代Spring的注解体系有了雏形，引入了 @Autowired、 @Controller这一系列骨架式的注解。3.x是黄金时代，它除了引入 @Enable模块驱动概念，加快了Spring注解体系的成型，还引入了配置类 @Confi">
+<meta name="description" content="[TOC] 1、起源​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 @Transactional等注解。到了2.x时代Spring的注解体系有了雏形，引入了 @Autowired、 @Controller这一系列骨架式的注解。3.x是黄金时代，它除了引入 @Enable模块驱动概念，加快了Spring注解体系的成型，还引入了配置类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[object Object]">
+<meta property="og:title" content="SpringBoot-1-SpringBoot基础1-自动装配基础">
 <meta property="og:url" content="http://xfljm.github.io/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
-<meta property="og:description" content="1、起源​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 @Transactional等注解。到了2.x时代Spring的注解体系有了雏形，引入了 @Autowired、 @Controller这一系列骨架式的注解。3.x是黄金时代，它除了引入 @Enable模块驱动概念，加快了Spring注解体系的成型，还引入了配置类 @Confi">
+<meta property="og:description" content="[TOC] 1、起源​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 @Transactional等注解。到了2.x时代Spring的注解体系有了雏形，引入了 @Autowired、 @Controller这一系列骨架式的注解。3.x是黄金时代，它除了引入 @Enable模块驱动概念，加快了Spring注解体系的成型，还引入了配置类">
 <meta property="article:published_time" content="2020-04-01T03:11:15.687Z">
-<meta property="article:modified_time" content="2020-04-16T04:22:08.859Z">
+<meta property="article:modified_time" content="2020-04-19T02:49:08.589Z">
 <meta property="article:author" content="xiaofei">
 <meta property="article:tag" content="SpringBoot">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
 
 
 
-  <title>[object Object] | 晓风残月的博客</title>
+  <title>SpringBoot-1-SpringBoot基础1-自动装配基础 | 晓风残月的博客</title>
   
 
 
@@ -303,7 +303,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+          <h1 class="post-title" itemprop="name headline">SpringBoot-1-SpringBoot基础1-自动装配基础</h1>
         
 
         <div class="post-meta">
@@ -380,7 +380,8 @@
       
 
       
-        <h1 id="1、起源"><a href="#1、起源" class="headerlink" title="1、起源"></a>1、起源</h1><p>​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 <code>@Transactional</code>等注解。到了2.x时代Spring的注解体系有了雏形，引入了 <code>@Autowired</code>、 <code>@Controller</code>这一系列骨架式的注解。3.x是黄金时代，它除了引入 <code>@Enable</code>模块驱动概念，加快了Spring注解体系的成型，还引入了配置类 <code>@Configuration</code>及<code>@ComponentScan</code> ，使我们可以抛弃XML配置文件的形式，全面拥抱Spring注解，但Spring并未完全放弃XML配置文件，它提供了<code>@ImportResource</code> 允许导入遗留的XML配置文件。此外还提供了 <code>@Import</code> 允许导入一个或多个Java类成为Spring Bean。4.X则趋于完善，引入了条件化注解<code>@Conditional</code> ，使装配更加的灵活。当下是5.X时代，是SpringBoot2.0的底层核心框架，目前来看，变化不是很大，但也引入了一个 <code>@Indexed</code> 注解，主要是用来提升启动性能的。好了，以上是Spring注解的发展史，接下来我们对Spring注解体系的几个议题进行讲解。</p>
+        <p>[TOC]</p>
+<h1 id="1、起源"><a href="#1、起源" class="headerlink" title="1、起源"></a>1、起源</h1><p>​    我们先来简单的聊聊Spring注解的发展史。Spring1.x时代，那时候注解的概念刚刚兴起，仅支持如 <code>@Transactional</code>等注解。到了2.x时代Spring的注解体系有了雏形，引入了 <code>@Autowired</code>、 <code>@Controller</code>这一系列骨架式的注解。3.x是黄金时代，它除了引入 <code>@Enable</code>模块驱动概念，加快了Spring注解体系的成型，还引入了配置类 <code>@Configuration</code>及<code>@ComponentScan</code> ，使我们可以抛弃XML配置文件的形式，全面拥抱Spring注解，但Spring并未完全放弃XML配置文件，它提供了<code>@ImportResource</code> 允许导入遗留的XML配置文件。此外还提供了 <code>@Import</code> 允许导入一个或多个Java类成为Spring Bean。4.X则趋于完善，引入了条件化注解<code>@Conditional</code> ，使装配更加的灵活。当下是5.X时代，是SpringBoot2.0的底层核心框架，目前来看，变化不是很大，但也引入了一个 <code>@Indexed</code> 注解，主要是用来提升启动性能的。好了，以上是Spring注解的发展史，接下来我们对Spring注解体系的几个议题进行讲解。</p>
 <h1 id="2、Spring-模式注解"><a href="#2、Spring-模式注解" class="headerlink" title="2、Spring 模式注解"></a>2、Spring 模式注解</h1><p>​    模式注解是一种用于声明在应用中扮演“组件”角色的注解。如 Spring 中的 @Repository 是用于扮演仓储角色的模式注解，用来管理和存储某种领域对象。还有如@Component 是通用组件模式、@Service 是服务模式、@Configuration 是配置模式等。其中@Component 作为一种由 Spring 容器托管的通用模式组件，任何被 @Component 标注的组件均为组件扫描的候选对象。类似地，凡是被 @Component 标注的注解，如@Service ，当任何组件标注它时，也被视作组件扫描的候选对象。<br>举例：</p>
 <table>
 <thead>
@@ -578,11 +579,11 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>本文标题:</span>SpringBoot-1-SpringBoot基础1-自动装配基础</a></p>
   <p><span>文章作者:</span>xiaofei</a></p>
   <p><span>发布时间:</span>2020年04月01日 - 11:11:15</p>
-  <p><span>最后更新:</span>2020年04月16日 - 12:22:08</p>
-  <p><span>原始链接:</span><a href="/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/" title="[object Object]">http://xfljm.github.io/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/</a>
+  <p><span>最后更新:</span>2020年04月19日 - 10:49:08</p>
+  <p><span>原始链接:</span><a href="/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/" title="SpringBoot-1-SpringBoot基础1-自动装配基础">http://xfljm.github.io/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/SpringBoot-1-SpringBoot%E5%9F%BA%E7%A1%801-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%9F%BA%E7%A1%80/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -629,8 +630,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/SpringBoot-3-SpringBoot%E5%9F%BA%E7%A1%803-SpringApplication%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="prev" title="[object Object]">
-                <i class="fa fa-chevron-left"></i> [object Object]
+              <a href="/2020/SpringBoot-3-SpringBoot%E5%9F%BA%E7%A1%803-SpringApplication%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="prev" title="SpringBoot-3-SpringBoot基础3-SpringApplication准备阶段原理分析">
+                <i class="fa fa-chevron-left"></i> SpringBoot-3-SpringBoot基础3-SpringApplication准备阶段原理分析
               </a>
             
           </div>
@@ -639,8 +640,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/SpringBoot-2-SpringBoot%E5%9F%BA%E7%A1%802-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="next" title="[object Object]">
-                [object Object] <i class="fa fa-chevron-right"></i>
+              <a href="/2020/SpringBoot-2-SpringBoot%E5%9F%BA%E7%A1%802-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="next" title="SpringBoot-2-SpringBoot基础2-自动装配原理分析">
+                SpringBoot-2-SpringBoot基础2-自动装配原理分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

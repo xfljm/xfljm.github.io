@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="SpringSecurity," />
 
 
 
@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetailsServic">
+<meta name="description" content="[TOC] 1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetails">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringSecurity-5-SpringSecurity-实现自动登录和自动注销">
 <meta property="og:url" content="http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
-<meta property="og:description" content="1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetailsServic">
+<meta property="og:description" content="[TOC] 1.功能实现123456789101112131415161718192021222324@EnableWebSecuritypublic class SecurityConfig extends WebSecurityConfigurerAdapter &amp;#123;    @Autowired    private MyUserDetailsService myUserDetails">
 <meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214442.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200304104452.png">
 <meta property="article:published_time" content="2020-03-03T13:37:44.276Z">
-<meta property="article:modified_time" content="2020-03-04T14:27:19.586Z">
+<meta property="article:modified_time" content="2020-04-19T02:53:55.304Z">
 <meta property="article:author" content="xiaofei">
+<meta property="article:tag" content="SpringSecurity">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png">
 
@@ -329,6 +330,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringSecurity/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringSecurity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -361,7 +384,8 @@
       
 
       
-        <h2 id="1-功能实现"><a href="#1-功能实现" class="headerlink" title="1.功能实现"></a>1.功能实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyUserDetailsService myUserDetailsService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/actuator/**"</span>).permitAll()</span><br><span class="line">                .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">                .and()</span><br><span class="line">            .formLogin()</span><br><span class="line">                .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">                .failureHandler(<span class="keyword">new</span> MyAuthenticationFailureHandler()) <span class="comment">// 登录失败后的处理</span></span><br><span class="line">                .and()</span><br><span class="line">             .csrf().disable()</span><br><span class="line">             .rememberMe()   </span><br><span class="line">                .userDetailsService(myUserDetailsService); <span class="comment">// 添加记住我</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>[TOC]</p>
+<h2 id="1-功能实现"><a href="#1-功能实现" class="headerlink" title="1.功能实现"></a>1.功能实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyUserDetailsService myUserDetailsService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                .antMatchers(<span class="string">"/api/admin/**"</span>).hasRole(<span class="string">"ADMIN"</span>) <span class="comment">//对"/admin"的请求判断是否有“ADMIN”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/user/**"</span>).hasRole(<span class="string">"USER"</span>) <span class="comment">//对"/user/**"下的请求判断是否有“USER”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/api/app/**"</span>).permitAll() <span class="comment">//对"/app/**"下的请求判断是否有“APP”权限</span></span><br><span class="line">                .antMatchers(<span class="string">"/actuator/**"</span>).permitAll()</span><br><span class="line">                .anyRequest().authenticated() <span class="comment">// 对所有请求都需要验证</span></span><br><span class="line">                .and()</span><br><span class="line">            .formLogin()</span><br><span class="line">                .successHandler(<span class="keyword">new</span> MyAuthenticationSuccessHandler()) <span class="comment">// 登录成功后的处理</span></span><br><span class="line">                .failureHandler(<span class="keyword">new</span> MyAuthenticationFailureHandler()) <span class="comment">// 登录失败后的处理</span></span><br><span class="line">                .and()</span><br><span class="line">             .csrf().disable()</span><br><span class="line">             .rememberMe()   </span><br><span class="line">                .userDetailsService(myUserDetailsService); <span class="comment">// 添加记住我</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>运行项目</p>
 <p><img src="https://raw.githubusercontent.com/xfljm/img/master/Img/20200303214112.png" alt></p>
@@ -394,7 +418,7 @@
 
 
 <p>临时性自动登录：这种方式不需要服务器花费空间来存储自动登录的相关数据，实现简单，安全性相对较高。但存在潜在风险，即如果该令牌在有效期内被盗取，那么用户的身份将完全暴露。</p>
-<h1 id="2-持久化令牌"><a href="#2-持久化令牌" class="headerlink" title="2. 持久化令牌"></a>2. 持久化令牌</h1><h2 id="2-1-持久化令牌实现"><a href="#2-1-持久化令牌实现" class="headerlink" title="2.1 持久化令牌实现"></a>2.1 持久化令牌实现</h2><p>持久化令牌方案在交互上与散列加密方案一致，都是在用户勾选Remember-me之后，将生成的令<br>牌发送到用户浏览器，并在用户下次访问系统时读取该令牌进行认证。不同的是，它采用了更加严谨<br>的安全性设计。<br>在持久化令牌方案中，最核心的是series和token两个值，它们都是用MD5散列过的随机字符串。<br>不同的是，series仅在用户使用密码重新登录时更新，而token会在每一个新的session中都重新生成。<br>这样设计有什么好处呢？<br>首先，解决了散列加密方案中一个令牌可以同时在多端登录的问题。每个会话都会引发token的更<br>新，即每个token仅支持单实例登录。<br>其次，自动登录不会导致series变更，而每次自动登录都需要同时验证series和token两个值，当该<br>令牌还未使用过自动登录就被盗取时，系统会在非法用户验证通过后刷新 token 值，此时在合法用户<br>的浏览器中，该token值已经失效。当合法用户使用自动登录时，由于该series对应的 token 不同，系统<br>可以推断该令牌可能已被盗用，从而做一些处理。例如，清理该用户的所有自动登录令牌，并通知该<br>用户可能已被盗号等。</p>
+<h2 id="3-持久化令牌"><a href="#3-持久化令牌" class="headerlink" title="3. 持久化令牌"></a>3. 持久化令牌</h2><h3 id="2-1-持久化令牌实现"><a href="#2-1-持久化令牌实现" class="headerlink" title="2.1 持久化令牌实现"></a>2.1 持久化令牌实现</h3><p>持久化令牌方案在交互上与散列加密方案一致，都是在用户勾选Remember-me之后，将生成的令<br>牌发送到用户浏览器，并在用户下次访问系统时读取该令牌进行认证。不同的是，它采用了更加严谨<br>的安全性设计。<br>在持久化令牌方案中，最核心的是series和token两个值，它们都是用MD5散列过的随机字符串。<br>不同的是，series仅在用户使用密码重新登录时更新，而token会在每一个新的session中都重新生成。<br>这样设计有什么好处呢？<br>首先，解决了散列加密方案中一个令牌可以同时在多端登录的问题。每个会话都会引发token的更<br>新，即每个token仅支持单实例登录。<br>其次，自动登录不会导致series变更，而每次自动登录都需要同时验证series和token两个值，当该<br>令牌还未使用过自动登录就被盗取时，系统会在非法用户验证通过后刷新 token 值，此时在合法用户<br>的浏览器中，该token值已经失效。当合法用户使用自动登录时，由于该series对应的 token 不同，系统<br>可以推断该令牌可能已被盗用，从而做一些处理。例如，清理该用户的所有自动登录令牌，并通知该<br>用户可能已被盗号等。</p>
 <p>Spring Security使用PersistentRememberMeToken来表明一个验证实体。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersistentRememberMeToken</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String username;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String series;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String tokenValue;</span><br><span class="line">    <span class="comment">// 最后一次自动登录时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Date date;</span><br><span class="line"> 	</span><br><span class="line">    <span class="comment">//....   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -407,7 +431,7 @@
 <p>运行项目，在数据库中将生成如下内容</p>
 <p><img src="https://raw.githubusercontent.com/xfljm/img/master/Img/20200304104452.png" alt></p>
 <p>显然，两种方案都存在cookie被盗取导致身份被暂时利用的可能，如果有更高的安全性需求，建<br>议使用Spring Security提供的令牌持久化方案。当然，最安全的方式还是尽量不使用自动登录，但很多<br>时候，在实际开发中，优质体验比不可预期的安全风险要更为优先。<br>如果决定提供自动登录功能，就应当限制cookie登录时的部分执行权限。例如，修改密码、修改<br>邮箱（防止找回密码）、查看隐私信息（如完整的手机号码、银行卡号等）等，校验登录密码或设置<br>独立密码来做二次校验也是不错的方案</p>
-<h1 id="自动注销"><a href="#自动注销" class="headerlink" title="自动注销"></a>自动注销</h1><p>在<code>WebSecurityConfigurerAdapter</code>类中</p>
+<h2 id="4-自动注销"><a href="#4-自动注销" class="headerlink" title="4. 自动注销"></a>4. 自动注销</h2><p>在<code>WebSecurityConfigurerAdapter</code>类中</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> HttpSecurity <span class="title">getHttp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 如果http存在，则直接返回</span></span><br><span class="line">       <span class="keyword">if</span> (http != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> http;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 使用默认的http配置</span></span><br><span class="line">	http = <span class="keyword">new</span> HttpSecurity(objectPostProcessor, authenticationBuilder,</span><br><span class="line">			sharedObjects);</span><br><span class="line">	<span class="keyword">if</span> (!disableDefaults) &#123;</span><br><span class="line">		<span class="comment">// @formatter:off</span></span><br><span class="line">		http</span><br><span class="line">			.csrf().and()</span><br><span class="line">			.addFilter(<span class="keyword">new</span> WebAsyncManagerIntegrationFilter())</span><br><span class="line">			.exceptionHandling().and()</span><br><span class="line">			.headers().and()</span><br><span class="line">			.sessionManagement().and()</span><br><span class="line">			.securityContext().and()</span><br><span class="line">			.requestCache().and()</span><br><span class="line">			.anonymous().and()</span><br><span class="line">			.servletApi().and()</span><br><span class="line">			.apply(<span class="keyword">new</span> DefaultLoginPageConfigurer&lt;&gt;()).and()</span><br><span class="line">			.logout(); <span class="comment">// 使用了默认的logout配置</span></span><br><span class="line">		</span><br><span class="line">           <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>同样我们可以知道<code>logout()</code>方法实际上应该是以<code>LogoutConfigure</code>作为基础配置</p>
@@ -472,6 +496,38 @@
 <div>
     
         
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>本文标题:</span>SpringSecurity-5-SpringSecurity-实现自动登录和自动注销</a></p>
+  <p><span>文章作者:</span>xiaofei</a></p>
+  <p><span>发布时间:</span>2020年03月03日 - 21:37:44</p>
+  <p><span>最后更新:</span>2020年04月19日 - 10:53:55</p>
+  <p><span>原始链接:</span><a href="/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/" title="SpringSecurity-5-SpringSecurity-实现自动登录和自动注销">http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/SpringSecurity-5-SpringSecurity-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%92%8C%E8%87%AA%E5%8A%A8%E6%B3%A8%E9%94%80/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
     
 </div>
 
@@ -483,6 +539,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringSecurity/" rel="tag"># SpringSecurity</a>
+          
+        </div>
       
 
       
@@ -694,7 +756,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-功能实现"><span class="nav-number">1.</span> <span class="nav-text">1.功能实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-原理分析"><span class="nav-number">2.</span> <span class="nav-text">2. 原理分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-持久化令牌"><span class="nav-number"></span> <span class="nav-text">2. 持久化令牌</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-持久化令牌实现"><span class="nav-number">1.</span> <span class="nav-text">2.1 持久化令牌实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动注销"><span class="nav-number"></span> <span class="nav-text">自动注销</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-功能实现"><span class="nav-number">1.</span> <span class="nav-text">1.功能实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-原理分析"><span class="nav-number">2.</span> <span class="nav-text">2. 原理分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-持久化令牌"><span class="nav-number">3.</span> <span class="nav-text">3. 持久化令牌</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-持久化令牌实现"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 持久化令牌实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-自动注销"><span class="nav-number">4.</span> <span class="nav-text">4. 自动注销</span></a></li></ol></div>
             
 
           </div>

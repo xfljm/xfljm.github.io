@@ -81,13 +81,13 @@
 
 <meta name="description" content="[TOC] 1. List集合介绍 在List集合中主要包括有三个主要的实现类：ArrayList、LinkedList和Vector类。这三个类均在java.util包中，均为可伸缩数组，即均可动态改变长度的数组。 由于ArrayList和Vector很相似，所以主要介绍这两个异同点： （1）相同点  拥有相同的继承和实现  ArrayList和Vector 都是基于存储元素的Object[]a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[object Object]">
+<meta property="og:title" content="Java基础-4-集合-Java基础-List集合之Vector源码解析">
 <meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
 <meta property="og:description" content="[TOC] 1. List集合介绍 在List集合中主要包括有三个主要的实现类：ArrayList、LinkedList和Vector类。这三个类均在java.util包中，均为可伸缩数组，即均可动态改变长度的数组。 由于ArrayList和Vector很相似，所以主要介绍这两个异同点： （1）相同点  拥有相同的继承和实现  ArrayList和Vector 都是基于存储元素的Object[]a">
 <meta property="og:image" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/images/20191217202502.png">
 <meta property="article:published_time" content="2020-04-16T03:35:31.784Z">
-<meta property="article:modified_time" content="2020-04-16T03:59:34.203Z">
+<meta property="article:modified_time" content="2020-04-19T02:39:01.616Z">
 <meta property="article:author" content="xiaofei">
 <meta property="article:tag" content="Java基础">
 <meta name="twitter:card" content="summary">
@@ -127,7 +127,7 @@
 
 
 
-  <title>[object Object] | 晓风残月的博客</title>
+  <title>Java基础-4-集合-Java基础-List集合之Vector源码解析 | 晓风残月的博客</title>
   
 
 
@@ -305,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+          <h1 class="post-title" itemprop="name headline">Java基础-4-集合-Java基础-List集合之Vector源码解析</h1>
         
 
         <div class="post-meta">
@@ -478,11 +478,11 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>本文标题:</span>Java基础-4-集合-Java基础-List集合之Vector源码解析</a></p>
   <p><span>文章作者:</span>xiaofei</a></p>
   <p><span>发布时间:</span>2020年04月16日 - 11:35:31</p>
-  <p><span>最后更新:</span>2020年04月16日 - 11:59:34</p>
-  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</a>
+  <p><span>最后更新:</span>2020年04月19日 - 10:39:01</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Java基础-4-集合-Java基础-List集合之Vector源码解析">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BVector%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -529,8 +529,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="[object Object]">
-                <i class="fa fa-chevron-left"></i> [object Object]
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="Java基础-4-集合-Java基础-List集合面试题">
+                <i class="fa fa-chevron-left"></i> Java基础-4-集合-Java基础-List集合面试题
               </a>
             
           </div>
@@ -539,8 +539,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BCopyOrWriteArrayList%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="next" title="[object Object]">
-                [object Object] <i class="fa fa-chevron-right"></i>
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-List%E9%9B%86%E5%90%88%E4%B9%8BCopyOrWriteArrayList%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="next" title="Java基础-4-集合-Java基础-List集合之CopyOrWriteArrayList源码解析">
+                Java基础-4-集合-Java基础-List集合之CopyOrWriteArrayList源码解析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

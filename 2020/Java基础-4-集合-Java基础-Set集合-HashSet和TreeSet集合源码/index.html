@@ -81,13 +81,13 @@
 
 <meta name="description" content="[TOC]  1. 前言在本节主要学习Set集合，首先看一下Set集合中的主要两个类HashSet和TreeSet类的继承结构图。  1.HashSet简要说明 HashSet在添加元素时，需要调用hashCode()和equals()方法，由于基本数据类型（比如String类，本身已经实现了这两个方法）所以可以直接添加。但是对于自定义类，需要在自定义类中需要手动实现上述两个方法。 HashSet">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[object Object]">
+<meta property="og:title" content="Java基础-4-集合-Java基础-Set集合-HashSet和TreeSet集合源码">
 <meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
 <meta property="og:description" content="[TOC]  1. 前言在本节主要学习Set集合，首先看一下Set集合中的主要两个类HashSet和TreeSet类的继承结构图。  1.HashSet简要说明 HashSet在添加元素时，需要调用hashCode()和equals()方法，由于基本数据类型（比如String类，本身已经实现了这两个方法）所以可以直接添加。但是对于自定义类，需要在自定义类中需要手动实现上述两个方法。 HashSet">
 <meta property="og:image" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/images/Set%E9%9B%86%E5%90%88.png">
 <meta property="article:published_time" content="2020-04-16T03:35:31.925Z">
-<meta property="article:modified_time" content="2020-04-16T04:04:38.109Z">
+<meta property="article:modified_time" content="2020-04-19T02:40:04.015Z">
 <meta property="article:author" content="xiaofei">
 <meta property="article:tag" content="Java基础">
 <meta name="twitter:card" content="summary">
@@ -127,7 +127,7 @@
 
 
 
-  <title>[object Object] | 晓风残月的博客</title>
+  <title>Java基础-4-集合-Java基础-Set集合-HashSet和TreeSet集合源码 | 晓风残月的博客</title>
   
 
 
@@ -305,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+          <h1 class="post-title" itemprop="name headline">Java基础-4-集合-Java基础-Set集合-HashSet和TreeSet集合源码</h1>
         
 
         <div class="post-meta">
@@ -651,11 +651,11 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>本文标题:</span>Java基础-4-集合-Java基础-Set集合-HashSet和TreeSet集合源码</a></p>
   <p><span>文章作者:</span>xiaofei</a></p>
   <p><span>发布时间:</span>2020年04月16日 - 11:35:31</p>
-  <p><span>最后更新:</span>2020年04月16日 - 12:04:38</p>
-  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/</a>
+  <p><span>最后更新:</span>2020年04月19日 - 10:40:04</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/" title="Java基础-4-集合-Java基础-Set集合-HashSet和TreeSet集合源码">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88-HashSet%E5%92%8CTreeSet%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -702,8 +702,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="[object Object]">
-                <i class="fa fa-chevron-left"></i> [object Object]
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Set%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="Java基础-4-集合-Java基础-Set集合面试题">
+                <i class="fa fa-chevron-left"></i> Java基础-4-集合-Java基础-Set集合面试题
               </a>
             
           </div>
@@ -712,8 +712,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="[object Object]">
-                [object Object] <i class="fa fa-chevron-right"></i>
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-4-%E9%9B%86%E5%90%88-Java%E5%9F%BA%E7%A1%80-Map%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="Java基础-4-集合-Java基础-Map集合面试题">
+                Java基础-4-集合-Java基础-Map集合面试题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

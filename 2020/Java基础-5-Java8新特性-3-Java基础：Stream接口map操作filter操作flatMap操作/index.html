@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="1.基本操作这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看《JAVA8 stream接口 中间操作和终端操作》 1.1filter操作作用：对内部的boolean判断，如果结果为true，则返回该对象 分析：我们先看方法的定义，这个方法，传入一个Predicate的函数接口，关于Predicate函数接口定义，可以查看《JAVA8 Predicate接口》，这个接口传入一">
+<meta name="description" content="[TOC] 1.基本操作这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看《JAVA8 stream接口 中间操作和终端操作》 1.1filter操作作用：对内部的boolean判断，如果结果为true，则返回该对象 分析：我们先看方法的定义，这个方法，传入一个Predicate的函数接口，关于Predicate函数接口定义，可以查看《JAVA8 Predicate接口》，这">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[object Object]">
+<meta property="og:title" content="Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作">
 <meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
-<meta property="og:description" content="1.基本操作这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看《JAVA8 stream接口 中间操作和终端操作》 1.1filter操作作用：对内部的boolean判断，如果结果为true，则返回该对象 分析：我们先看方法的定义，这个方法，传入一个Predicate的函数接口，关于Predicate函数接口定义，可以查看《JAVA8 Predicate接口》，这个接口传入一">
+<meta property="og:description" content="[TOC] 1.基本操作这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看《JAVA8 stream接口 中间操作和终端操作》 1.1filter操作作用：对内部的boolean判断，如果结果为true，则返回该对象 分析：我们先看方法的定义，这个方法，传入一个Predicate的函数接口，关于Predicate函数接口定义，可以查看《JAVA8 Predicate接口》，这">
 <meta property="article:published_time" content="2020-04-16T03:35:32.300Z">
-<meta property="article:modified_time" content="2020-04-16T04:09:09.415Z">
+<meta property="article:modified_time" content="2020-04-19T02:41:55.381Z">
 <meta property="article:author" content="xiaofei">
 <meta property="article:tag" content="Java基础">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
 
 
 
-  <title>[object Object] | 晓风残月的博客</title>
+  <title>Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作 | 晓风残月的博客</title>
   
 
 
@@ -303,7 +303,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+          <h1 class="post-title" itemprop="name headline">Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作</h1>
         
 
         <div class="post-meta">
@@ -380,7 +380,8 @@
       
 
       
-        <h2 id="1-基本操作"><a href="#1-基本操作" class="headerlink" title="1.基本操作"></a>1.基本操作</h2><p>这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看<a href="https://blog.csdn.net/qq_28410283/article/details/80634725" target="_blank" rel="noopener">《JAVA8 stream接口 中间操作和终端操作》</a></p>
+        <p>[TOC]</p>
+<h2 id="1-基本操作"><a href="#1-基本操作" class="headerlink" title="1.基本操作"></a>1.基本操作</h2><p>这篇，我们来看Stream的一些中间操作，关于中间操作的一些介绍，可以看<a href="https://blog.csdn.net/qq_28410283/article/details/80634725" target="_blank" rel="noopener">《JAVA8 stream接口 中间操作和终端操作》</a></p>
 <h3 id="1-1filter操作"><a href="#1-1filter操作" class="headerlink" title="1.1filter操作"></a>1.1filter操作</h3><p><strong>作用：</strong>对内部的boolean判断，如果结果为true，则返回该对象</p>
 <p><strong>分析：</strong>我们先看方法的定义，这个方法，传入一个Predicate的函数接口，关于Predicate函数接口定义，可以查看<a href="https://blog.csdn.net/qq_28410283/article/details/80601495" target="_blank" rel="noopener">《JAVA8 Predicate接口》</a>，这个接口传入一个泛型参数T，做完操作之后，返回一个boolean值；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream&lt;T&gt; <span class="title">filter</span><span class="params">(Predicate&lt;? <span class="keyword">super</span> T&gt; predicate)</span></span>;</span><br></pre></td></tr></table></figure>
@@ -470,11 +471,11 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>本文标题:</span>Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作</a></p>
   <p><span>文章作者:</span>xiaofei</a></p>
   <p><span>发布时间:</span>2020年04月16日 - 11:35:32</p>
-  <p><span>最后更新:</span>2020年04月16日 - 12:09:09</p>
-  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/</a>
+  <p><span>最后更新:</span>2020年04月19日 - 10:41:55</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/" title="Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -521,8 +522,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-2-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3%E4%B8%AD%E9%97%B4%E6%93%8D%E4%BD%9C%E5%92%8C%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9C/" rel="prev" title="[object Object]">
-                <i class="fa fa-chevron-left"></i> [object Object]
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-2-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3%E4%B8%AD%E9%97%B4%E6%93%8D%E4%BD%9C%E5%92%8C%E7%BB%88%E7%AB%AF%E6%93%8D%E4%BD%9C/" rel="prev" title="Java基础-5-Java8新特性-2-Java基础：Stream接口中间操作和终端操作">
+                <i class="fa fa-chevron-left"></i> Java基础-5-Java8新特性-2-Java基础：Stream接口中间操作和终端操作
               </a>
             
           </div>
@@ -531,8 +532,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/" rel="next" title="[object Object]">
-                [object Object] <i class="fa fa-chevron-right"></i>
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/" rel="next" title="Java基础-5-Java8新特性-18-Java基础：BiConsumer接口">
+                Java基础-5-Java8新特性-18-Java基础：BiConsumer接口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="这个接口跟《JAVA8 Consumer接口》很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义 12345678910111213141516@FunctionalInterfacepublic interface BiConsumer&lt;T, U&gt; &amp;#123;         void accept(T t, U u); 	&#x2F;**本接口中的accept先执行，传入的Bi">
+<meta name="description" content="[TOC] 1. BiConsumer接口这个接口跟《JAVA8 Consumer接口》很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义 12345678910111213141516@FunctionalInterfacepublic interface BiConsumer&lt;T, U&gt; &amp;#123;         void accept(T t, U u); 	&#x2F;*">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[object Object]">
+<meta property="og:title" content="Java基础-5-Java8新特性-18-Java基础：BiConsumer接口">
 <meta property="og:url" content="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/index.html">
 <meta property="og:site_name" content="晓风残月的博客">
-<meta property="og:description" content="这个接口跟《JAVA8 Consumer接口》很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义 12345678910111213141516@FunctionalInterfacepublic interface BiConsumer&lt;T, U&gt; &amp;#123;         void accept(T t, U u); 	&#x2F;**本接口中的accept先执行，传入的Bi">
+<meta property="og:description" content="[TOC] 1. BiConsumer接口这个接口跟《JAVA8 Consumer接口》很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义 12345678910111213141516@FunctionalInterfacepublic interface BiConsumer&lt;T, U&gt; &amp;#123;         void accept(T t, U u); 	&#x2F;*">
 <meta property="article:published_time" content="2020-04-16T03:35:32.284Z">
-<meta property="article:modified_time" content="2020-04-16T04:18:34.905Z">
+<meta property="article:modified_time" content="2020-04-19T02:48:27.012Z">
 <meta property="article:author" content="xiaofei">
 <meta property="article:tag" content="Java基础">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
 
 
 
-  <title>[object Object] | 晓风残月的博客</title>
+  <title>Java基础-5-Java8新特性-18-Java基础：BiConsumer接口 | 晓风残月的博客</title>
   
 
 
@@ -303,7 +303,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[object Object]</h1>
+          <h1 class="post-title" itemprop="name headline">Java基础-5-Java8新特性-18-Java基础：BiConsumer接口</h1>
         
 
         <div class="post-meta">
@@ -380,7 +380,8 @@
       
 
       
-        <p>这个接口跟<a href="https://blog.csdn.net/qq_28410283/article/details/80618456" target="_blank" rel="noopener">《JAVA8 Consumer接口》</a>很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义</p>
+        <p>[TOC]</p>
+<h2 id="1-BiConsumer接口"><a href="#1-BiConsumer接口" class="headerlink" title="1. BiConsumer接口"></a>1. BiConsumer接口</h2><p>这个接口跟<a href="https://blog.csdn.net/qq_28410283/article/details/80618456" target="_blank" rel="noopener">《JAVA8 Consumer接口》</a>很像，表达的想法也是一致的，都是消费的意思，我们先看下接口定义</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BiConsumer</span>&lt;<span class="title">T</span>, <span class="title">U</span>&gt; </span>&#123;</span><br><span class="line"> </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t, U u)</span></span>;</span><br><span class="line"> </span><br><span class="line">	<span class="comment">/**本接口中的accept先执行，传入的BiConsumer 接口类型的参数，后执行accept*/</span></span><br><span class="line">    <span class="function"><span class="keyword">default</span> BiConsumer&lt;T, U&gt; <span class="title">andThen</span><span class="params">(BiConsumer&lt;? <span class="keyword">super</span> T, ? <span class="keyword">super</span> U&gt; after)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(after);</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> (l, r) -&gt; &#123;</span><br><span class="line">            accept(l, r);</span><br><span class="line">            after.accept(l, r);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这个接口接收两个泛型参数，跟Consumer一样，都有一个 accept方法，只不过，这里的，接收两个泛型参数，对这两个参数做下消费处理；使用这个函数式接口的终端操作有map的遍历；下面看下面的例子，两个参数消费数据的</p>
@@ -441,11 +442,11 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>[object Object]</a></p>
+  <p><span>本文标题:</span>Java基础-5-Java8新特性-18-Java基础：BiConsumer接口</a></p>
   <p><span>文章作者:</span>xiaofei</a></p>
   <p><span>发布时间:</span>2020年04月16日 - 11:35:32</p>
-  <p><span>最后更新:</span>2020年04月16日 - 12:18:34</p>
-  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/" title="[object Object]">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/</a>
+  <p><span>最后更新:</span>2020年04月19日 - 10:48:27</p>
+  <p><span>原始链接:</span><a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/" title="Java基础-5-Java8新特性-18-Java基础：BiConsumer接口">http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://xfljm.github.io/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-18-Java%E5%9F%BA%E7%A1%80%EF%BC%9ABiConsumer%E6%8E%A5%E5%8F%A3/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
@@ -492,8 +493,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/" rel="prev" title="[object Object]">
-                <i class="fa fa-chevron-left"></i> [object Object]
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-3-Java%E5%9F%BA%E7%A1%80%EF%BC%9AStream%E6%8E%A5%E5%8F%A3map%E6%93%8D%E4%BD%9Cfilter%E6%93%8D%E4%BD%9CflatMap%E6%93%8D%E4%BD%9C/" rel="prev" title="Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作">
+                <i class="fa fa-chevron-left"></i> Java基础-5-Java8新特性-3-Java基础：Stream接口map操作filter操作flatMap操作
               </a>
             
           </div>
@@ -502,8 +503,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-16-Java%E5%9F%BA%E7%A1%80%EF%BC%9ASupplier%E6%8E%A5%E5%8F%A3/" rel="next" title="[object Object]">
-                [object Object] <i class="fa fa-chevron-right"></i>
+              <a href="/2020/Java%E5%9F%BA%E7%A1%80-5-Java8%E6%96%B0%E7%89%B9%E6%80%A7-16-Java%E5%9F%BA%E7%A1%80%EF%BC%9ASupplier%E6%8E%A5%E5%8F%A3/" rel="next" title="Java基础-5-Java8新特性-16-Java基础：Supplier接口">
+                Java基础-5-Java8新特性-16-Java基础：Supplier接口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -557,8 +558,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -674,6 +684,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-BiConsumer接口"><span class="nav-number">1.</span> <span class="nav-text">1. BiConsumer接口</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
